@@ -121,8 +121,8 @@ void stopbomb(char *nic, char *reason) {
 	irc_kick(gs_bot, gameroom[GS_GAME_BOMB], gameplayernick[GS_GAME_BOMB], "\0034BOOOOOM !!!!!!");
 	irc_chanprivmsg (gs_bot, gameroom[GS_GAME_BOMB], "\0037GAME OVER");
 	irc_part (gs_bot, gameroom[GS_GAME_BOMB], NULL);
-	gameroom[GS_GAME_BOMB][0] = '';
-	gameplayernick[GS_GAME_BOMB][0] = '';
+	gameroom[GS_GAME_BOMB][0] = '\0';
+	gameplayernick[GS_GAME_BOMB][0] = '\0';
 	gamestatus[GS_GAME_BOMB] = GS_GAME_STOPPED;
 }
 

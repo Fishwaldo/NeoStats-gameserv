@@ -135,8 +135,8 @@ void stopruss(char *nic, char *reason) {
 	irc_kick(gs_bot, gameroom[GS_GAME_RUSS], gameplayernick[GS_GAME_RUSS], russdiereason);
 	irc_chanprivmsg (gs_bot, gameroom[GS_GAME_RUSS], "\0037GAME OVER");
 	irc_part (gs_bot, gameroom[GS_GAME_RUSS], NULL);
-	gameroom[GS_GAME_RUSS][0] = '';
-	gameplayernick[GS_GAME_RUSS][0] = '';
+	gameroom[GS_GAME_RUSS][0] = '\0';
+	gameplayernick[GS_GAME_RUSS][0] = '\0';
 	gamestatus[GS_GAME_RUSS] = GS_GAME_STOPPED;
 }
 
