@@ -105,7 +105,7 @@ int passbomb(CmdParams* cmdparams) {
 						irc_chanprivmsg (gs_bot, bombroom, "\0037%s passes the Bomb to %s.", bombplayernick, u->name);
 						break;
 				}
-				if (IsExcluded(u) || IsMe(u)) {
+				if (IsExcluded(u) || IsMe(u) || is_bot(u)) {
 					irc_chanprivmsg (gs_bot, bombroom, "\0037the Bomb Bounces off an invisible Force Field, and returns to %s.", bombplayernick);
 				} else {
 					strlcpy (bombplayernick, u->name, MAXNICK);

@@ -84,7 +84,7 @@ int shootruss(CmdParams* cmdparams) {
 		if (!u) {
 			stopruss(argv[1], "noton");
 		} else {
-			if (IsExcluded(u) || IsMe(u)) {
+			if (IsExcluded(u) || IsMe(u) || is_bot(u)) {
 				irc_chanprivmsg (gs_bot, russroom, "\0037%s Refuses to play this game %s, try someone else.", u->name, russplayernick);
 			} else {
 				c = FindChannel(russroom);
