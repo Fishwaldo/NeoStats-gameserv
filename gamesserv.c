@@ -169,11 +169,3 @@ void ModFini (void)
 		DelTimer ("russcountdown");
 	}
 }
-
-#ifdef WIN32 /* temp */
-
-int main (int argc, char **argv)
-{
-	return 0;
-}
-#endif
