@@ -111,8 +111,8 @@ static bot_cmd gs_commands[]=
 
 static bot_setting gs_settings[]=
 {
-	{"KICKGAMESCHANOPONLY",	&kickgameschanoponly,	SET_TYPE_BOOLEAN,	0,	0,	NS_ULEVEL_ADMIN,	"KickGamesStartByChanOpsOnly",	NULL,	gs_help_set_kickchanoponly,	NULL,	(void *)0 },
-	{NULL,			NULL,			0,			0,	0,	0,			NULL,				NULL,	NULL, 				NULL },
+	{"KICKGAMESCHANOPONLY",	&kickgameschanoponly,	SET_TYPE_BOOLEAN,	0,	0,	NS_ULEVEL_ADMIN,	NULL,	gs_help_set_kickchanoponly,	NULL,	(void *)0 },
+	{NULL,			NULL,			0,			0,	0,	0,			NULL,	NULL, 				NULL },
 };
 
 /*
