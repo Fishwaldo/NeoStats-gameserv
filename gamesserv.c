@@ -25,6 +25,11 @@
 #include "gamesserv.h"
 
 /*
+ * Module Variables
+*/
+int kickgameschanoponly;
+
+/*
  * Game Variables
 */
 char gameroom[GS_GAME_TOTAL][MAXCHANLEN];

@@ -1,6 +1,6 @@
 /* GamesServ - Small Games Service - NeoStats Addon Module
 ** Copyright (c) 2005 DeadNotBuried
-** Portions Copyright (c) 1999-2005, NeoStats",
+** Portions Copyright (c) 1999-2005, NeoStats,
 **
 **  This program is free software; you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -68,6 +68,7 @@ int timerupstopruss(void);
 #define GS_GAME_STOPPED		0x00000001	/* Game Not Running */
 #define GS_GAME_STARTING	0x00000002	/* Game Starting */
 #define GS_GAME_PLAYING		0x00000003	/* Game Running */
+#define GS_GAME_STOPPING	0x00000004	/* Game Stopping */
 
 /*
  * Game Variables
@@ -80,7 +81,7 @@ extern int countdowntime[GS_GAME_TOTAL];
 /*
  * Common Variables
 */
-int kickgameschanoponly;
+extern int kickgameschanoponly;
 
 /*
  * Common Help
