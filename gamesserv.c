@@ -25,6 +25,14 @@
 #include "gamesserv.h"
 
 /*
+ * Game Variables
+*/
+char gameroom[GS_GAME_TOTAL][MAXCHANLEN];
+int gamestatus[GS_GAME_TOTAL];
+char gameplayernick[GS_GAME_TOTAL][MAXNICK];
+int countdowntime[GS_GAME_TOTAL];
+
+/*
  * Copyright info and About
 */
 const char *gs_copyright[] = {

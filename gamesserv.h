@@ -72,10 +72,10 @@ int timerupstopruss(void);
 /*
  * Game Variables
 */
-char gameroom[GS_GAME_TOTAL][MAXCHANLEN];
-int gamestatus[GS_GAME_TOTAL];
-char gameplayernick[GS_GAME_TOTAL][MAXNICK];
-int countdowntime[GS_GAME_TOTAL];
+extern char gameroom[GS_GAME_TOTAL][MAXCHANLEN];
+extern int gamestatus[GS_GAME_TOTAL];
+extern char gameplayernick[GS_GAME_TOTAL][MAXNICK];
+extern int countdowntime[GS_GAME_TOTAL];
 
 /*
  * Common Variables

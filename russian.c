@@ -42,9 +42,8 @@ int startruss(CmdParams* cmdparams) {
 					countdowntime[GS_GAME_RUSS] = 60;
 					strlcpy (gameroom[GS_GAME_RUSS], cmdparams->av[0], MAXCHANLEN);
 					strlcpy (gameplayernick[GS_GAME_RUSS], cmdparams->source->name, MAXNICK);
-					gamestatus[GS_GAME_RUSS] == GS_GAME_PLAYING;
-					irc_join (gs_bot, gameroom[GS_GAME_RUSS], NULL);
-					irc_cmode (gs_bot, gameroom[GS_GAME_RUSS], "+o", gs_bot->name);
+					gamestatus[GS_GAME_RUSS] = GS_GAME_PLAYING;
+					irc_join (gs_bot, gameroom[GS_GAME_RUSS], "+o");
 					irc_chanprivmsg (gs_bot, gameroom[GS_GAME_RUSS], "\0037Russian Roulette has been started by %s. Who will die this time?", cmdparams->source->name);
 					AddTimer (TIMER_TYPE_COUNTDOWN, timerupstopruss, "russcountdown", countdowntime[GS_GAME_RUSS]);
 				}
@@ -77,7 +76,6 @@ int shootruss(CmdParams* cmdparams) {
 			} else {
 				c = FindChannel(gameroom[GS_GAME_RUSS]);
 				if (IsChannelMember(c, u)) {
-					DelTimer ("russcountdown");
 					ttto = ( ( rand() % 5 ) + 1 );
 					if ( ttto < countdowntime[GS_GAME_RUSS] ) {
 						countdowntime[GS_GAME_RUSS] -= ttto;
@@ -101,8 +99,7 @@ int shootruss(CmdParams* cmdparams) {
 					} else {
 						strlcpy (gameplayernick[GS_GAME_RUSS], u->name, MAXNICK);
 						irc_chanprivmsg (gs_bot, gameroom[GS_GAME_RUSS], "\0034click!, you now have the gun %s, select someone to shoot.", gameplayernick[GS_GAME_RUSS]);
-						DelTimer ("russcountdown");
-						AddTimer (TIMER_TYPE_COUNTDOWN, timerupstopruss, "russcountdown", countdowntime[GS_GAME_RUSS]);
+						SetTimerInterval("russcountdown", countdowntime[GS_GAME_RUSS]);
 					}
 				} else {
 					stopruss(cmdparams->av[0], "notin");

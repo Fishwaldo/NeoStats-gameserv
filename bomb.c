@@ -43,8 +43,7 @@ int startbomb(CmdParams* cmdparams) {
 					strlcpy (gameroom[GS_GAME_BOMB], cmdparams->av[0], MAXCHANLEN);
 					strlcpy (gameplayernick[GS_GAME_BOMB], cmdparams->source->name, MAXNICK);
 					gamestatus[GS_GAME_BOMB] = GS_GAME_PLAYING;
-					irc_join (gs_bot, gameroom[GS_GAME_BOMB], NULL);
-					irc_cmode (gs_bot, gameroom[GS_GAME_BOMB], "+o", gs_bot->name);
+					irc_join (gs_bot, gameroom[GS_GAME_BOMB], "+o");
 					irc_chanprivmsg (gs_bot, gameroom[GS_GAME_BOMB], "\0037A Bomb has been brought into the channel by %s. Don''t be the last one with it.", cmdparams->source->name);
 					AddTimer (TIMER_TYPE_COUNTDOWN, timerupstopbomb, "bombcountdown", countdowntime[GS_GAME_BOMB]);
 				}
@@ -73,7 +72,6 @@ int passbomb(CmdParams* cmdparams) {
 		} else {
 			c = FindChannel(gameroom[GS_GAME_BOMB]);
 			if (IsChannelMember(c, u)) {
-				DelTimer ("bombcountdown");
 				ttto = ( ( rand() % 5 ) + 1 );
 				if ( ttto < countdowntime[GS_GAME_BOMB] ) {
 					countdowntime[GS_GAME_BOMB] -= ttto;
@@ -97,7 +95,7 @@ int passbomb(CmdParams* cmdparams) {
 				} else {
 					strlcpy (gameplayernick[GS_GAME_BOMB], u->name, MAXNICK);
 				}
-				AddTimer (TIMER_TYPE_COUNTDOWN, timerupstopbomb, "bombcountdown", countdowntime[GS_GAME_BOMB]);
+				SetTimerInterval("bombcountdown", countdowntime[GS_GAME_BOMB]);
 			} else {
 				stopbomb(cmdparams->av[0], "notin");
 			}
