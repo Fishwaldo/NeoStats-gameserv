@@ -142,7 +142,7 @@ int ModSynch (void)
 /*
  * Init module
 */
-int ModInit (Module *mod_ptr)
+int ModInit( void )
 {
 	int i;
 
@@ -160,7 +160,7 @@ int ModInit (Module *mod_ptr)
 /*
  * Exit module
 */
-void ModFini (void)
+int ModFini( void )
 {
 	if ( gamestatus[GS_GAME_BOMB] == GS_GAME_PLAYING ) {
 		DelTimer ("bombcountdown");
@@ -168,4 +168,5 @@ void ModFini (void)
 	if ( gamestatus[GS_GAME_RUSS] == GS_GAME_PLAYING ) {
 		DelTimer ("russcountdown");
 	}
+	return NS_SUCCESS;
 }
