@@ -90,7 +90,7 @@ int passbomb(CmdParams* cmdparams) {
 						irc_chanprivmsg (gs_bot, gameroom[GS_GAME_BOMB], "\0037%s passes the Bomb to %s.", gameplayernick[GS_GAME_BOMB], u->name);
 						break;
 				}
-				if ( IsExcluded(u) || IsMe(u) || IsBot(u) || u->user->is_away == 1 ) {
+				if ( IsExcluded(u) || IsMe(u) || IsBot(u) || IsAway(u) ) {
 					irc_chanprivmsg (gs_bot, gameroom[GS_GAME_BOMB], "\0037the Bomb Bounces off an invisible Force Field, and returns to %s.", gameplayernick[GS_GAME_BOMB]);
 				} else {
 					strlcpy (gameplayernick[GS_GAME_BOMB], u->name, MAXNICK);
