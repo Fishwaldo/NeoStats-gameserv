@@ -27,15 +27,15 @@ Bot *gs_bot;
  * Bomb Game Help
 */
 extern const char gs_help_bomb_oneline[];
-extern const char gs_help_pass_oneline[];
+extern const char gs_help_throw_oneline[];
 extern const char *gs_help_bomb[];
-extern const char *gs_help_pass[];
+extern const char *gs_help_throw[];
 
 /*
  * Bomb Game Procedures
 */
 int startbomb (CmdParams* cmdparams);
-int passbomb (CmdParams* cmdparams);
+int throwbomb (CmdParams* cmdparams);
 void stopbomb(char *nic, char *reason);
 int timerupstopbomb(void);
 

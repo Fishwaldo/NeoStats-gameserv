@@ -58,9 +58,9 @@ int startbomb(CmdParams* cmdparams) {
 }
 
 /*
- * Pass Bomb
+ * Throw Bomb
 */
-int passbomb(CmdParams* cmdparams) {
+int throwbomb(CmdParams* cmdparams) {
 	Client *u;
 	Channel *c;
 	int ttto;

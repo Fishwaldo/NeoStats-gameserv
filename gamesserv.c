@@ -98,7 +98,7 @@ int PlayerNickChange (CmdParams* cmdparams)
 static bot_cmd gs_commands[]=
 {
 	{"BOMB",	startbomb,	1,	0,	gs_help_bomb,	gs_help_bomb_oneline},
-	{"PASS",	passbomb,	1,	0,	gs_help_pass,	gs_help_pass_oneline},
+	{"THROW",	throwbomb,	1,	0,	gs_help_throw,	gs_help_throw_oneline},
 	{"RUSSIAN",	startruss,	1,	0,	gs_help_russ,	gs_help_russ_oneline},
 	{"SHOOT",	shootruss,	1,	0,	gs_help_shoot,	gs_help_shoot_oneline},
 	{NULL,		NULL,		0, 	0,	NULL,		NULL}
