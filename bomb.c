@@ -27,32 +27,11 @@
  * Start Bomb Game
 */
 int startbomb(CmdParams* cmdparams) {
-	Channel *c;
-
-	if (gamestatus[GS_GAME_BOMB] == GS_GAME_STOPPED) {
-		c = FindChannel(cmdparams->av[0]);
-		if (!c) {
-			irc_prefmsg (gs_bot, cmdparams->source, "You must be in the Channel you wish to start the game in.");
-		} else {
-			if (IsChannelMember(c, cmdparams->source)) {					
-				if ( kickgameschanoponly && !IsChanOp(c->name, cmdparams->source->name) ) {
-					irc_prefmsg (gs_bot, cmdparams->source, "You must be a Channel Operator to start the game.");
-				} else {
-					countdowntime[GS_GAME_BOMB] = 60;
-					strlcpy (gameroom[GS_GAME_BOMB], cmdparams->av[0], MAXCHANLEN);
-					strlcpy (gameplayernick[GS_GAME_BOMB], cmdparams->source->name, MAXNICK);
-					gamestatus[GS_GAME_BOMB] = GS_GAME_PLAYING;
-					irc_join (gs_bot, gameroom[GS_GAME_BOMB], "+o");
-					irc_chanprivmsg (gs_bot, gameroom[GS_GAME_BOMB], "\0037A Bomb has been brought into the channel by %s. Don''t be the last one with it.", cmdparams->source->name);
-					AddTimer (TIMER_TYPE_COUNTDOWN, timerupstopbomb, "bombcountdown", countdowntime[GS_GAME_BOMB]);
-				}
-			} else {
-				irc_prefmsg (gs_bot, cmdparams->source, "You must be in the Channel you wish to start the game in.");
-			}
-		}
-	} else {
-		irc_prefmsg (gs_bot, cmdparams->source, "The Game is already active in %s , Try Again Later.", gameroom[GS_GAME_BOMB]);
+	if (CheckGameStart(cmdparams->source, cmdparams->av[0], GS_GAME_BOMB, 60, GS_GAME_KICK, GS_GAME_CHANNEL_JOIN) != NS_SUCCESS) {
+		return NS_SUCCESS;
 	}
+	irc_chanprivmsg (gs_bot, gameroom[GS_GAME_BOMB], "\0037A Bomb has been brought into the channel by %s. Don''t be the last one with it.", cmdparams->source->name);
+	AddTimer (TIMER_TYPE_COUNTDOWN, timerupstopbomb, "bombcountdown", countdowntime[GS_GAME_BOMB]);
 	return NS_SUCCESS;
 }
 
@@ -117,11 +96,7 @@ void stopbomb(char *nic, char *reason) {
 		}
 	}
 	irc_kick(gs_bot, gameroom[GS_GAME_BOMB], gameplayernick[GS_GAME_BOMB], "\0034BOOOOOM !!!!!!");
-	irc_chanprivmsg (gs_bot, gameroom[GS_GAME_BOMB], "\0037GAME OVER");
 	CheckPartGameChannel(GS_GAME_BOMB);
-	gameroom[GS_GAME_BOMB][0] = '\0';
-	gameplayernick[GS_GAME_BOMB][0] = '\0';
-	gamestatus[GS_GAME_BOMB] = GS_GAME_STOPPED;
 }
 
 /*

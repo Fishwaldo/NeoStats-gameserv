@@ -44,12 +44,62 @@ int PlayerNickChange (CmdParams* cmdparams)
 void CheckPartGameChannel(int gr) {
 	int i;
 
-	for (i = 0 ; i < GS_GAME_TOTAL ; i++)
+	irc_chanprivmsg (gs_bot, gameroom[gr], "\0037GAME OVER");
+	for (i = 0 ; i < GS_GAME_TOTAL ; i++) {
 		if (!ircstrcasecmp (gameroom[i], gameroom[gr]) && i != gr) {
 			i = -1;
 			break;
 		}
+	}
 	if (i != -1) {
 		irc_part (gs_bot, gameroom[gr], NULL);
 	}
+	gameroom[gr][0] = '\0';
+	gameplayernick[gr][0] = '\0';
+	gamestatus[gr] = GS_GAME_STOPPED;
+	return;
+}
+
+/*
+ * Check Game not already running,
+ * and channel allowed for game,
+ * and join channel if needed.
+*/
+int CheckGameStart(Client *u, char *cn, int gn, int ct, int kg, int cj) {
+	Channel *c;
+	int i;
+	
+	if (gamestatus[gn] != GS_GAME_STOPPED) {
+		irc_prefmsg (gs_bot, u, "The Game is already active in %s , Try Again Later.", gameroom[gn]);
+		return NS_FAILURE;
+	}
+	c = FindChannel(cn);
+	if (!c) {
+		irc_prefmsg (gs_bot, u, "You must be in the Channel you wish to start the game in.");
+		return NS_FAILURE;
+	}
+	if (!IsChannelMember(c, u)) {
+		irc_prefmsg (gs_bot, u, "You must be in the Channel you wish to start the game in.");
+		return NS_FAILURE;
+	}
+	if (kickgameschanoponly && kg == GS_GAME_KICK && !IsChanOp(c->name, u->name)) {
+		irc_prefmsg (gs_bot, u, "You must be a Channel Operator to start the game.");
+		return NS_FAILURE;
+	}
+	if (cj == GS_GAME_CHANNEL_JOIN) {
+		for (i = 0 ; i < GS_GAME_TOTAL ; i++) {
+			if (!ircstrcasecmp (gameroom[i], gameroom[gn]) && i != gn) {
+				i = -1;
+				break;
+			}
+		}
+		if (i != -1) {
+			irc_join (gs_bot, gameroom[gn], "+o");
+		}
+	}
+	countdowntime[gn] = ct;
+	strlcpy (gameroom[gn], cn, MAXCHANLEN);
+	strlcpy (gameplayernick[gn], u->name, MAXNICK);
+	gamestatus[gn] = GS_GAME_PLAYING;
+	return NS_SUCCESS;
 }

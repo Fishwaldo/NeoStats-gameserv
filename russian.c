@@ -27,32 +27,11 @@
  * Start Russian Roulette Game
 */
 int startruss(CmdParams* cmdparams) {
-	Channel *c;
-
-	if ( gamestatus[GS_GAME_RUSS] == GS_GAME_STOPPED ) {
-		c = FindChannel(cmdparams->av[0]);
-		if (!c) {
-			irc_prefmsg (gs_bot, cmdparams->source, "You must be in the Channel you wish to start the game in.");
-		} else {
-			if (IsChannelMember(c, cmdparams->source)) {
-				if ( kickgameschanoponly && !IsChanOp(c->name, cmdparams->source->name) ) {
-					irc_prefmsg (gs_bot, cmdparams->source, "You must be a Channel Operator to start the game.");
-				} else {
-					countdowntime[GS_GAME_RUSS] = 60;
-					strlcpy (gameroom[GS_GAME_RUSS], cmdparams->av[0], MAXCHANLEN);
-					strlcpy (gameplayernick[GS_GAME_RUSS], cmdparams->source->name, MAXNICK);
-					gamestatus[GS_GAME_RUSS] = GS_GAME_PLAYING;
-					irc_join (gs_bot, gameroom[GS_GAME_RUSS], "+o");
-					irc_chanprivmsg (gs_bot, gameroom[GS_GAME_RUSS], "\0037Russian Roulette has been started by %s. Who will die this time?", cmdparams->source->name);
-					AddTimer (TIMER_TYPE_COUNTDOWN, timerupstopruss, "russcountdown", countdowntime[GS_GAME_RUSS]);
-				}
-			} else {
-				irc_prefmsg (gs_bot, cmdparams->source, "You must be in the Channel you wish to start the game in.");
-			}
-		}
-	} else {
-		irc_prefmsg (gs_bot, cmdparams->source, "The Game is already active in %s , Try Again Later.", gameroom[GS_GAME_RUSS]);
+	if (CheckGameStart(cmdparams->source, cmdparams->av[0], GS_GAME_RUSS, 60, GS_GAME_KICK, GS_GAME_CHANNEL_JOIN) != NS_SUCCESS) {
+		return NS_SUCCESS;
 	}
+	irc_chanprivmsg (gs_bot, gameroom[GS_GAME_RUSS], "\0037Russian Roulette has been started by %s. Who will die this time?", cmdparams->source->name);
+	AddTimer (TIMER_TYPE_COUNTDOWN, timerupstopruss, "russcountdown", countdowntime[GS_GAME_RUSS]);
 	return NS_SUCCESS;
 }
 
@@ -132,11 +111,7 @@ void stopruss(char *nic, char *reason) {
 		}
 	}
 	irc_kick(gs_bot, gameroom[GS_GAME_RUSS], gameplayernick[GS_GAME_RUSS], russdiereason);
-	irc_chanprivmsg (gs_bot, gameroom[GS_GAME_RUSS], "\0037GAME OVER");
 	CheckPartGameChannel(GS_GAME_RUSS);
-	gameroom[GS_GAME_RUSS][0] = '\0';
-	gameplayernick[GS_GAME_RUSS][0] = '\0';
-	gamestatus[GS_GAME_RUSS] = GS_GAME_STOPPED;
 }
 
 /*

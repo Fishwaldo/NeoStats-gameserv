@@ -30,31 +30,14 @@ static int num;
  * Start HiLo Game
 */
 int starthilo(CmdParams* cmdparams) {
-	Channel *c;
-
-	if (gamestatus[GS_GAME_HILO] == GS_GAME_STOPPED) {
-		c = FindChannel(cmdparams->av[0]);
-		if (!c) {
-			irc_prefmsg (gs_bot, cmdparams->source, "You must be in the Channel you wish to start the game in.");
-		} else {
-			if (IsChannelMember(c, cmdparams->source)) {					
-				num_low = (rand() % 999000);
-				num = (num_low + (rand() % 999) + 1);
-				num_high = (num_low + 1000);
-				countdowntime[GS_GAME_HILO] = 120;
-				strlcpy (gameroom[GS_GAME_HILO], cmdparams->av[0], MAXCHANLEN);
-				strlcpy (gameplayernick[GS_GAME_HILO], cmdparams->source->name, MAXNICK);
-				gamestatus[GS_GAME_HILO] = GS_GAME_PLAYING;
-				irc_join (gs_bot, gameroom[GS_GAME_HILO], "+o");
-				irc_chanprivmsg (gs_bot, gameroom[GS_GAME_HILO], "\0037A game of HiLo has been started by %s. Can you guess the number between %d and %d.", cmdparams->source->name, num_low, num_high);
-				AddTimer (TIMER_TYPE_COUNTDOWN, timerupstophilo, "hilocountdown", countdowntime[GS_GAME_HILO]);
-			} else {
-				irc_prefmsg (gs_bot, cmdparams->source, "You must be in the Channel you wish to start the game in.");
-			}
-		}
-	} else {
-		irc_prefmsg (gs_bot, cmdparams->source, "The Game is already active in %s , Try Again Later.", gameroom[GS_GAME_HILO]);
+	if (CheckGameStart(cmdparams->source, cmdparams->av[0], GS_GAME_HILO, 120, GS_GAME_NOKICK, GS_GAME_CHANNEL_JOIN) != NS_SUCCESS) {
+		return NS_SUCCESS;
 	}
+	num_low = (rand() % 999000);
+	num = (num_low + (rand() % 999) + 1);
+	num_high = (num_low + 1000);
+	irc_chanprivmsg (gs_bot, gameroom[GS_GAME_HILO], "\0037A game of HiLo has been started by %s. Can you guess the number between %d and %d.", cmdparams->source->name, num_low, num_high);
+	AddTimer (TIMER_TYPE_COUNTDOWN, timerupstophilo, "hilocountdown", countdowntime[GS_GAME_HILO]);
 	return NS_SUCCESS;
 }
 
@@ -94,10 +77,7 @@ void stophilo(char *nic, int hlg) {
 		irc_chanprivmsg (gs_bot, gameroom[GS_GAME_HILO], "\0037%s is correct with %d and wins, the rest of you are just Losers :)", nic, hlg);
 		DelTimer ("hilocountdown");
 	}
-	irc_chanprivmsg (gs_bot, gameroom[GS_GAME_HILO], "\0037GAME OVER");
 	CheckPartGameChannel(GS_GAME_HILO);
-	gameroom[GS_GAME_HILO][0] = '\0';
-	gamestatus[GS_GAME_HILO] = GS_GAME_STOPPED;
 }
 
 /*

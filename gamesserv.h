@@ -84,6 +84,11 @@ int timerupstophilo(void);
 #define GS_GAME_PLAYING		0x00000003	/* Game Running */
 #define GS_GAME_STOPPING	0x00000004	/* Game Stopping */
 
+#define GS_GAME_CHANNEL_NOJOIN	0x00000000	/* Don't Join Game Channel */
+#define GS_GAME_CHANNEL_JOIN	0x00000001	/* Join Game Channel */
+#define GS_GAME_NOKICK		0x00000000	/* No Kicks From Channels */
+#define GS_GAME_KICK		0x00000001	/* Loser Kicked From Game Channel */
+
 /*
  * Game Variables
 */
@@ -107,3 +112,4 @@ extern const char *gs_help_set_kickchanoponly[];
 */
 int PlayerNickChange (CmdParams* cmdparams);
 void CheckPartGameChannel(int gr);
+int CheckGameStart(Client *u, char *cn, int gn, int ct, int kg, int cj);
