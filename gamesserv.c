@@ -1,6 +1,5 @@
 /* GamesServ - Small Games Service - NeoStats Addon Module
-** Copyright (c) 2004 DeadNotBuried
-** Portions Copyright (c) 1999-2005, NeoStats",
+** Copyright (c) 2005 Justin Hammond, Mark Hetherington, DeadNotBuried
 **
 **  This program is free software; you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -41,8 +40,7 @@ int countdowntime[GS_GAME_TOTAL];
  * Copyright info and About
 */
 const char *gs_copyright[] = {
-	"Copyright (c) 2005 DeadNotBuried",
-	"Portions Copyright (c) 1999-2005, NeoStats",
+	"Copyright (c) 2005 Justin Hammond, Mark Hetherington, DeadNotBuried",
 	NULL
 };
 
@@ -83,21 +81,6 @@ ModuleEvent module_events[] = {
 };
 
 /*
- * Nick Change Check
-*/
-int PlayerNickChange (CmdParams* cmdparams)
-{
-	int i;
-
-	for (i = 0; i < GS_GAME_TOTAL; i++) {
-		if (!ircstrcasecmp (gameplayernick[i], cmdparams->param)) {
-			strlcpy (gameplayernick[i], cmdparams->source->name, MAXNICK);
-		}
-	}
-	return NS_SUCCESS;
-}
-
-/*
  * Commands and Settings
 */
 static bot_cmd gs_commands[]=
@@ -106,6 +89,8 @@ static bot_cmd gs_commands[]=
 	{"THROW",	throwbomb,	1,	0,	gs_help_throw,	gs_help_throw_oneline},
 	{"RUSSIAN",	startruss,	1,	0,	gs_help_russ,	gs_help_russ_oneline},
 	{"SHOOT",	shootruss,	1,	0,	gs_help_shoot,	gs_help_shoot_oneline},
+	{"HILO",	starthilo,	1,	0,	gs_help_hilo,	gs_help_hilo_oneline},
+	{"GUESS",	guesshilo,	1,	0,	gs_help_guess,	gs_help_guess_oneline},
 	{NULL,		NULL,		0, 	0,	NULL,		NULL}
 };
 
@@ -172,6 +157,9 @@ int ModFini( void )
 	}
 	if ( gamestatus[GS_GAME_RUSS] == GS_GAME_PLAYING ) {
 		DelTimer ("russcountdown");
+	}
+	if ( gamestatus[GS_GAME_HILO] == GS_GAME_PLAYING ) {
+		DelTimer ("hilocountdown");
 	}
 	return NS_SUCCESS;
 }

@@ -24,28 +24,32 @@
 #include "gamesserv.h"
 
 /*
- * Help Text
+ * Nick Change Check
 */
-const char gs_help_bomb_oneline[] = "Start a Bomb Game in a Channel";
-const char gs_help_throw_oneline[] = "Pass the Bomb to another Nick in the Channel";
+int PlayerNickChange (CmdParams* cmdparams)
+{
+	int i;
 
-const char *gs_help_bomb[] = {
-	"Syntax: \2BOMB <#Channel>\2",
-	"",
-	"This command starts the Bomb Game in the specified Channel.",
-	"",
-        "The Channel Must Exist, and you must be in the Channel",
-	"",
-	"The person holding the Bomb when it explodes is kicked from the Channel",
-	"",
-	"Each player in turn gets less time to pass the Bomb to another Nick",
-	NULL
-};
+	for (i = 0; i < GS_GAME_TOTAL; i++) {
+		if (!ircstrcasecmp (gameplayernick[i], cmdparams->param)) {
+			strlcpy (gameplayernick[i], cmdparams->source->name, MAXNICK);
+		}
+	}
+	return NS_SUCCESS;
+}
 
-const char *gs_help_throw[] = {
-	"Syntax: \2throw <nickname>\2",
-	"",
-	"This option will pass the bomb to the specified Nickname",
-	"The Nickname Must be in the channel at the time, or you lose.",
-	NULL
-};
+/*
+ * Check and part Game channel if no games in channel
+*/
+void CheckPartGameChannel(int gr) {
+	int i;
+
+	for (i = 0 ; i < GS_GAME_TOTAL ; i++)
+		if (!ircstrcasecmp (gameroom[i], gameroom[gr]) && i != gr) {
+			i = -1;
+			break;
+		}
+	if (i != -1) {
+		irc_part (gs_bot, gameroom[gr], NULL);
+	}
+}

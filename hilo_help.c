@@ -26,26 +26,21 @@
 /*
  * Help Text
 */
-const char gs_help_bomb_oneline[] = "Start a Bomb Game in a Channel";
-const char gs_help_throw_oneline[] = "Pass the Bomb to another Nick in the Channel";
+const char gs_help_hilo_oneline[] = "Start a HiLo Game in a Channel";
+const char gs_help_guess_oneline[] = "Takes a Guess of the HiLo number";
 
-const char *gs_help_bomb[] = {
-	"Syntax: \2BOMB <#Channel>\2",
+const char *gs_help_hilo[] = {
+	"Syntax: \2HILO <#Channel>\2",
 	"",
-	"This command starts the Bomb Game in the specified Channel.",
+	"This command starts the HiLo Game in the specified Channel.",
 	"",
         "The Channel Must Exist, and you must be in the Channel",
-	"",
-	"The person holding the Bomb when it explodes is kicked from the Channel",
-	"",
-	"Each player in turn gets less time to pass the Bomb to another Nick",
 	NULL
 };
 
-const char *gs_help_throw[] = {
-	"Syntax: \2throw <nickname>\2",
+const char *gs_help_guess[] = {
+	"Syntax: \2GUESS <number>\2",
 	"",
-	"This option will pass the bomb to the specified Nickname",
-	"The Nickname Must be in the channel at the time, or you lose.",
+	"Take a guess at what the HiLo number is",
 	NULL
 };

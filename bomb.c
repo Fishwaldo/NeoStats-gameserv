@@ -1,6 +1,5 @@
 /* GamesServ - Small Games Service - NeoStats Addon Module
-** Copyright (c) 2004 DeadNotBuried
-** Portions Copyright (c) 1999-2005, NeoStats",
+** Copyright (c) 2005 Justin Hammond, Mark Hetherington, DeadNotBuried
 **
 **  This program is free software; you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -108,7 +107,6 @@ int throwbomb(CmdParams* cmdparams) {
  * Stop Bomb Game
 */
 void stopbomb(char *nic, char *reason) {
-
 	if (!ircstrcasecmp (reason, "noton")) {
 		irc_chanprivmsg (gs_bot, gameroom[GS_GAME_BOMB], "\0037%s must be blind there is no %s on the network.", gameplayernick[GS_GAME_BOMB], nic);
 		DelTimer ("bombcountdown");
@@ -120,7 +118,7 @@ void stopbomb(char *nic, char *reason) {
 	}
 	irc_kick(gs_bot, gameroom[GS_GAME_BOMB], gameplayernick[GS_GAME_BOMB], "\0034BOOOOOM !!!!!!");
 	irc_chanprivmsg (gs_bot, gameroom[GS_GAME_BOMB], "\0037GAME OVER");
-	irc_part (gs_bot, gameroom[GS_GAME_BOMB], NULL);
+	CheckPartGameChannel(GS_GAME_BOMB);
 	gameroom[GS_GAME_BOMB][0] = '\0';
 	gameplayernick[GS_GAME_BOMB][0] = '\0';
 	gamestatus[GS_GAME_BOMB] = GS_GAME_STOPPED;

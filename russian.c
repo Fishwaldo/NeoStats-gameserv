@@ -1,6 +1,5 @@
 /* GamesServ - Small Games Service - NeoStats Addon Module
-** Copyright (c) 2004 DeadNotBuried
-** Portions Copyright (c) 1999-2005, NeoStats",
+** Copyright (c) 2005 Justin Hammond, Mark Hetherington, DeadNotBuried
 **
 **  This program is free software; you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -134,7 +133,7 @@ void stopruss(char *nic, char *reason) {
 	}
 	irc_kick(gs_bot, gameroom[GS_GAME_RUSS], gameplayernick[GS_GAME_RUSS], russdiereason);
 	irc_chanprivmsg (gs_bot, gameroom[GS_GAME_RUSS], "\0037GAME OVER");
-	irc_part (gs_bot, gameroom[GS_GAME_RUSS], NULL);
+	CheckPartGameChannel(GS_GAME_RUSS);
 	gameroom[GS_GAME_RUSS][0] = '\0';
 	gameplayernick[GS_GAME_RUSS][0] = '\0';
 	gamestatus[GS_GAME_RUSS] = GS_GAME_STOPPED;

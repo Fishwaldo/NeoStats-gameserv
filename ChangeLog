@@ -1,4 +1,7 @@
-BombServ ChangeLog
+GamesServ ChangeLog
+Fish (F), Mark (M), DeadNotBuried (D)
 =============================================================================
-1.0 - DeadNotBuried
- - Initial Release
+3.0.a3-dev
+ - add HiLo Game (D)
+ - Update Copyright (D)
+ - Initial SVM Upload (D)

@@ -1,6 +1,5 @@
 /* GamesServ - Small Games Service - NeoStats Addon Module
-** Copyright (c) 2005 DeadNotBuried
-** Portions Copyright (c) 1999-2005, NeoStats,
+** Copyright (c) 2005 Justin Hammond, Mark Hetherington, DeadNotBuried
 **
 **  This program is free software; you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -39,7 +38,6 @@ int throwbomb (CmdParams* cmdparams);
 void stopbomb(char *nic, char *reason);
 int timerupstopbomb(void);
 
-
 /*
  * Russian Roulette Game Help
 */
@@ -56,14 +54,30 @@ int shootruss (CmdParams* cmdparams);
 void stopruss(char *nic, char *reason);
 int timerupstopruss(void);
 
+/*
+ * HiLo Game Help
+*/
+extern const char gs_help_hilo_oneline[];
+extern const char gs_help_guess_oneline[];
+extern const char *gs_help_hilo[];
+extern const char *gs_help_guess[];
+
+/*
+ * HiLo Game Procedures
+*/
+int starthilo(CmdParams* cmdparams);
+int guesshilo(CmdParams* cmdparams);
+void stophilo(char *nic, int hlg);
+int timerupstophilo(void);
 
 /*
  * Defines
 */
-#define GS_GAME_TOTAL		0x00000002	/* Number Of Games */
+#define GS_GAME_TOTAL		0x00000003	/* Number Of Games */
 
 #define GS_GAME_BOMB		0x00000000	/* Bomb Game */
 #define GS_GAME_RUSS		0x00000001	/* Russian Roulette Game */
+#define GS_GAME_HILO		0x00000002	/* HiLo Game */
 
 #define GS_GAME_STOPPED		0x00000001	/* Game Not Running */
 #define GS_GAME_STARTING	0x00000002	/* Game Starting */
@@ -92,3 +106,4 @@ extern const char *gs_help_set_kickchanoponly[];
  * Common Procedures
 */
 int PlayerNickChange (CmdParams* cmdparams);
+void CheckPartGameChannel(int gr);

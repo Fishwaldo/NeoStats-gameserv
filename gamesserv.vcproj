@@ -128,10 +128,19 @@
 				RelativePath=".\bomb_help.c">
 			</File>
 			<File
+				RelativePath=".\common.c">
+			</File>
+			<File
 				RelativePath=".\gamesserv.c">
 			</File>
 			<File
 				RelativePath=".\gamesserv_help.c">
+			</File>
+			<File
+				RelativePath=".\hilo.c">
+			</File>
+			<File
+				RelativePath=".\hilo_help.c">
 			</File>
 			<File
 				RelativePath=".\russian.c">

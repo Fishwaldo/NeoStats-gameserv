@@ -1,46 +1,55 @@
 #Neostats Module Makefile!
 CC = @CC@
-CFLAGS = @CFLAGS@ -g
-LDFLAGS = @LIBS@
+CFLAGS = @CFLAGS@
+LDFLAGS= @LDFLAGS@
 INSTALL = @INSTALL@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_DATA = @INSTALL_DATA@
 DIRECTORY = @DIRINST@/modules/
 INCLUDES = -I@DIRINST@/include/ -I.
 
-SRCS= gamesserv.c gamesserv_help.c bomb.c bomb_help.c russian.c russian_help.c
+SRCS= gamesserv.c gamesserv_help.c bomb.c bomb_help.c common.c hilo.c hilo_help.c russian.c russian_help.c
 OBJS= ${SRCS:.c=.o}
 TARGET= gamesserv.so
 DOCS=README.GamesServ
-SCRIPTS=
 DATA=
-DISTFILES=$(SRCS) $(DOCS) $(SCRIPTS) *.in configure install-sh ChangeLog *.h LICENSE
+SCRIPTS=
+DISTFILES=$(SRCS) $(DOCS) $(SCRIPTS) *.in configure install-sh ChangeLog *.h LICENSE RELNOTES gamesserv.vcproj modconfigwin32.h
 DISTDIR= @PACKAGE@-@VERSION@
 
-all:	 module
+all:	module
+		@echo "Compilation complete."
+		@echo "Run 'make install' (or 'gmake install' on some systems) to install."
+		@echo "If you require support, see the README file."
+
+# include dependency info
+@MAKEDEPENDENCIES@
 
 .c.o:	
 	$(CC) -c $(CFLAGS) $(INCLUDES) $<
-	echo "Compilation complete."
-	echo "Run 'make install' (or 'gmake install' on some systems) to install NeoStats."
-	echo "If you require support, see the README file."
+	$(CC) -MM $(INCLUDES) -c $< > $*.d
 
 module:	 $(OBJS)
-	 $(LD) -shared -o $(TARGET) $(LDFLAGS) $(OBJS)
+	$(LD) -shared -o $(TARGET) $(OBJS) $(LDFLAGS)
 
 clean:
-	 /bin/rm -rf $(TARGET) *.o Makefile *.log modconfig.h
+	/bin/rm -rf $(TARGET) *.o *.d Makefile *.log modconfig.h
+
+distclean:
+	/bin/rm -rf $(TARGET) *.o *.d Makefile *.log modconfig.h config.status configure.scan
 
 install: module
-	 $(INSTALL) -m 644 $(TARGET) $(DIRECTORY)
-	 $(INSTALL) -m 644 $(DOCS) $(DIRECTORY)../doc/
+	$(INSTALL) -m 644 $(TARGET) $(DIRECTORY)
+	$(INSTALL) -m 644 $(DOCS) $(DIRECTORY)../doc/
+	@echo "Installation complete."
+	@echo "See the README file for instructions on loading this module."
 
 dist:	
-	@echo -n "Creating Directories"
+	@echo -n "Creating directories"
 	@-rm -rf $(DISTDIR)
 	@mkdir $(DISTDIR)
 	@echo "Done"
-	@echo -n "Copying Core Distribution Files"
+	@echo -n "Copying distribution files"
 	@for file in $(DISTFILES); do \
 		echo -n "."; \
 		cp -pr $$file $(DISTDIR)/$$file; \
@@ -49,7 +58,4 @@ dist:
 	@tar -czf $(DISTDIR).tar.gz $(DISTDIR)/*
 	@echo "Tar file $(DISTDIR).tar.gz created, Freshmeat Time"
 
-
-
 $(OBJS): Makefile
-
