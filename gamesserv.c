@@ -148,8 +148,8 @@ int ModInit( void )
 
 	/* clear Game variables */
 	for (i = 0; i < GS_GAME_TOTAL; i++) {
-		gameroom[i][0] = "";
-		gameplayernick[i][0] = "";
+		gameroom[i][0] = '';
+		gameplayernick[i][0] = '';
 		gamestatus[i] = GS_GAME_STOPPED;
 		countdowntime[i] = 60;
 	}
