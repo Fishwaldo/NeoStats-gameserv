@@ -8,7 +8,7 @@ INSTALL_DATA = @INSTALL_DATA@
 DIRECTORY = @DIRINST@/modules/
 INCLUDES = -I@DIRINST@/include/ -I.
 
-SRCS= gamesserv.c bomb.c bomb_help.c russian.c russian_help.c
+SRCS= gamesserv.c gamesserv_help.c bomb.c bomb_help.c russian.c russian_help.c
 OBJS= ${SRCS:.c=.o}
 TARGET= gamesserv.so
 DOCS=README.GamesServ

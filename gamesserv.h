@@ -72,10 +72,16 @@ int timerupstopruss(void);
 
 
 /*
- * Common Procedures
+ * Bomb Game Variables
 */
-int PlayerNickChange (CmdParams* cmdparams);
+int kickgameschanoponly;
 
 /*
  * Common Help
 */
+extern const char *gs_help_set_kickchanoponly[];
+
+/*
+ * Common Procedures
+*/
+int PlayerNickChange (CmdParams* cmdparams);

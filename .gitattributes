@@ -13,6 +13,7 @@
 /gamesserv.c -text
 /gamesserv.h -text
 /gamesserv.vcproj -text
+/gamesserv_help.c -text
 /install-sh -text
 /modconfig.h.in -text
 /russian.c -text

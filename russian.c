@@ -44,14 +44,18 @@ int startruss(CmdParams* cmdparams) {
 			u = FindUser(cmdparams->source->name);
 			tuic = IsChannelMember(c, u);
 			if (tuic == 1) {					
-				russcountdowntime = 60;
-				strlcpy (russroom, argv[1], MAXCHANLEN);
-				strlcpy (russplayernick, cmdparams->source->name, MAXNICK);
-				strlcpy (currentrussgamestatus, "playing", 10);
-				irc_join (gs_bot, russroom, NULL);
-				irc_cmode (gs_bot, russroom, "+o", gs_bot->name);
-				irc_chanprivmsg (gs_bot, russroom, "\0037Russian Roulette has been started by %s. Who will die this time?", cmdparams->source->name);
-				AddTimer (TIMER_TYPE_COUNTDOWN, timerupstopruss, "russcountdown", russcountdowntime);
+				if ( kickgameschanoponly && !IsChanOp(c->name, u->name) ) {
+					irc_prefmsg (gs_bot, cmdparams->source, "You must be a Channel Operator to start the game.");
+				} else {
+					russcountdowntime = 60;
+					strlcpy (russroom, argv[1], MAXCHANLEN);
+					strlcpy (russplayernick, cmdparams->source->name, MAXNICK);
+					strlcpy (currentrussgamestatus, "playing", 10);
+					irc_join (gs_bot, russroom, NULL);
+					irc_cmode (gs_bot, russroom, "+o", gs_bot->name);
+					irc_chanprivmsg (gs_bot, russroom, "\0037Russian Roulette has been started by %s. Who will die this time?", cmdparams->source->name);
+					AddTimer (TIMER_TYPE_COUNTDOWN, timerupstopruss, "russcountdown", russcountdowntime);
+				}
 			} else {
 				irc_prefmsg (gs_bot, cmdparams->source, "You must be in the Channel you wish to start the game in.");
 			}
@@ -74,17 +78,17 @@ int shootruss(CmdParams* cmdparams) {
 	Client *u;
 	Channel *c;
 	int ttto;
-	int rt1;
+	int rt;
 
 	strlcpy (line, cmdparams->param, 512);
 	argc = split_buf (line, &argv, 0);
 
-	if (!ircstrcasecmp (cmdparams->source->name, russplayernick)) {
+	if ( !ircstrcasecmp (cmdparams->source->name, russplayernick) && !ircstrcasecmp (currentrussgamestatus, "playing") ) {
 		u = FindUser (argv[1]);
 		if (!u) {
 			stopruss(argv[1], "noton");
 		} else {
-			if (IsExcluded(u) || IsMe(u) || is_bot(u)) {
+			if ( IsExcluded(u) || IsMe(u) || is_bot(u) || u->user->is_away == 1 ) {
 				irc_chanprivmsg (gs_bot, russroom, "\0037%s Refuses to play this game %s, try someone else.", u->name, russplayernick);
 			} else {
 				c = FindChannel(russroom);
@@ -106,8 +110,8 @@ int shootruss(CmdParams* cmdparams) {
 							irc_chanprivmsg (gs_bot, russroom, "\0037%s points the gun at %s and fires.", russplayernick, u->name);
 							break;
 					}
-					rt1 = ( rand() % 6 );
-					if ( rt1 == 5 ) {
+					rt = ( rand() % 9 );
+					if ( rt == 7 ) {
 						irc_chanprivmsg (gs_bot, russroom, "\0034\2BANG!\2, Nice one %s.", russplayernick);
 						strlcpy (russplayernick, u->name, MAXNICK);
 						stopruss(argv[1],"Shot");
@@ -157,6 +161,8 @@ void stopruss(char *nic, char *reason) {
 	irc_kick(gs_bot, russroom, russplayernick, russdiereason);
 	irc_chanprivmsg (gs_bot, russroom, "\0037GAME OVER");
 	irc_part (gs_bot, russroom, NULL);
+	strlcpy (russroom, "", MAXCHANLEN);
+	strlcpy (russplayernick, "", MAXNICK);
 	strlcpy (currentrussgamestatus, "stopped", 10);
 }
 

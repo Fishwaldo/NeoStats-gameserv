@@ -81,6 +81,9 @@ int PlayerNickChange (CmdParams* cmdparams)
 	return NS_SUCCESS;
 }
 
+/*
+ * Commands and Settings
+*/
 static bot_cmd gs_commands[]=
 {
 	{"BOMB",	startbomb,	1,	0,	gs_help_bomb,	gs_help_bomb_oneline},
@@ -90,6 +93,12 @@ static bot_cmd gs_commands[]=
 	{NULL,		NULL,		0, 	0,	NULL,		NULL}
 };
 
+static bot_setting gs_settings[]=
+{
+	{"KICKGAMESCHANOPONLY",	&kickgameschanoponly,	SET_TYPE_BOOLEAN,	0,	0,	NS_ULEVEL_ADMIN,	"KickGamesStartByChanOpsOnly",	NULL,	gs_help_set_kickchanoponly,	NULL,	(void *)0 },
+	{NULL,			NULL,			0,			0,	0,	0,			NULL,				NULL,	NULL, 				NULL },
+};
+
 /*
  * BotInfo
 */
@@ -97,12 +106,12 @@ static BotInfo gs_botinfo =
 {
 	"GamesServ",
 	"GamesServ1",
-	"WS",
+	"GamesServ",
 	BOT_COMMON_HOST,
 	"Small Game Service",
 	BOT_FLAG_SERVICEBOT,
 	gs_commands,
-	NULL,
+	gs_settings,
 };
 
 /*
@@ -124,7 +133,6 @@ int ModSynch (void)
 */
 int ModInit (Module *mod_ptr)
 {
-	me.want_nickip = 1;
 	/* clear Bomb Game variables */
 	strlcpy (bombroom, "", MAXCHANLEN);
 	strlcpy (bombplayernick, "", MAXNICK);
@@ -134,6 +142,7 @@ int ModInit (Module *mod_ptr)
 	strlcpy (russplayernick, "", MAXNICK);
 	strlcpy (currentrussgamestatus, "stopped", 10);
 	russcountdowntime = 60;
+	ModuleConfig (gs_settings);
 	return NS_SUCCESS;
 }
 

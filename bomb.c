@@ -44,14 +44,18 @@ int startbomb(CmdParams* cmdparams) {
 			u = FindUser(cmdparams->source->name);
 			tuic = IsChannelMember(c, u);
 			if (tuic == 1) {					
-				bombcountdowntime = 60;
-				strlcpy (bombroom, argv[1], MAXCHANLEN);
-				strlcpy (bombplayernick, cmdparams->source->name, MAXNICK);
-				strlcpy (currentbombgamestatus, "playing", 10);
-				irc_join (gs_bot, bombroom, NULL);
-				irc_cmode (gs_bot, bombroom, "+o", gs_bot->name);
-				irc_chanprivmsg (gs_bot, bombroom, "\0037A Bomb has been brought into the channel by %s. Don''t be the last one with it.", cmdparams->source->name);
-				AddTimer (TIMER_TYPE_COUNTDOWN, timerupstopbomb, "bombcountdown", bombcountdowntime);
+				if ( kickgameschanoponly && !IsChanOp(c->name, u->name) ) {
+					irc_prefmsg (gs_bot, cmdparams->source, "You must be a Channel Operator to start the game.");
+				} else {
+					bombcountdowntime = 60;
+					strlcpy (bombroom, argv[1], MAXCHANLEN);
+					strlcpy (bombplayernick, cmdparams->source->name, MAXNICK);
+					strlcpy (currentbombgamestatus, "playing", 10);
+					irc_join (gs_bot, bombroom, NULL);
+					irc_cmode (gs_bot, bombroom, "+o", gs_bot->name);
+					irc_chanprivmsg (gs_bot, bombroom, "\0037A Bomb has been brought into the channel by %s. Don''t be the last one with it.", cmdparams->source->name);
+					AddTimer (TIMER_TYPE_COUNTDOWN, timerupstopbomb, "bombcountdown", bombcountdowntime);
+				}
 			} else {
 				irc_prefmsg (gs_bot, cmdparams->source, "You must be in the Channel you wish to start the game in.");
 			}
@@ -78,7 +82,7 @@ int passbomb(CmdParams* cmdparams) {
 	strlcpy (line, cmdparams->param, 512);
 	argc = split_buf (line, &argv, 0);
 
-	if (!ircstrcasecmp (cmdparams->source->name, bombplayernick)) {
+	if ( !ircstrcasecmp (cmdparams->source->name, bombplayernick) && !ircstrcasecmp (currentbombgamestatus, "playing") ) {
 		u = FindUser (argv[1]);
 		if (!u) {
 			stopbomb(argv[1], "noton");
@@ -105,7 +109,7 @@ int passbomb(CmdParams* cmdparams) {
 						irc_chanprivmsg (gs_bot, bombroom, "\0037%s passes the Bomb to %s.", bombplayernick, u->name);
 						break;
 				}
-				if (IsExcluded(u) || IsMe(u) || is_bot(u)) {
+				if ( IsExcluded(u) || IsMe(u) || is_bot(u) || u->user->is_away == 1 ) {
 					irc_chanprivmsg (gs_bot, bombroom, "\0037the Bomb Bounces off an invisible Force Field, and returns to %s.", bombplayernick);
 				} else {
 					strlcpy (bombplayernick, u->name, MAXNICK);
@@ -142,6 +146,8 @@ void stopbomb(char *nic, char *reason) {
 	irc_kick(gs_bot, bombroom, bombplayernick, "\0034BOOOOOM !!!!!!");
 	irc_chanprivmsg (gs_bot, bombroom, "\0037GAME OVER");
 	irc_part (gs_bot, bombroom, NULL);
+	strlcpy (bombroom, "", MAXCHANLEN);
+	strlcpy (bombplayernick, "", MAXNICK);
 	strlcpy (currentbombgamestatus, "stopped", 10);
 }
 
