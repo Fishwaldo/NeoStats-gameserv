@@ -1,1 +1,19 @@
 * text=auto !eol
+/AUTHORS -text
+/COPYING -text
+/ChangeLog -text
+/LICENSE -text
+/Makefile.in -text
+/NEWS -text
+/README.GamesServ -text
+/bomb.c -text
+/bomb_help.c -text
+/configure -text
+/configure.in -text
+/gamesserv.c -text
+/gamesserv.h -text
+/gamesserv.vcproj -text
+/install-sh -text
+/modconfig.h.in -text
+/russian.c -text
+/russian_help.c -text
