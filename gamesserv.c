@@ -72,11 +72,12 @@ ModuleEvent module_events[] = {
 */
 int PlayerNickChange (CmdParams* cmdparams)
 {
-	if (!ircstrcasecmp (bombplayernick, cmdparams->param)) {
-		strlcpy (bombplayernick, cmdparams->source->name, MAXNICK);
-	}
-	if (!ircstrcasecmp (russplayernick, cmdparams->param)) {
-		strlcpy (russplayernick, cmdparams->source->name, MAXNICK);
+	int i;
+
+	for (i = 0; i < GS_GAME_TOTAL; i++) {
+		if (!ircstrcasecmp (gameplayernick[i], cmdparams->param)) {
+			strlcpy (gameplayernick[i], cmdparams->source->name, MAXNICK);
+		}
 	}
 	return NS_SUCCESS;
 }
@@ -133,15 +134,15 @@ int ModSynch (void)
 */
 int ModInit (Module *mod_ptr)
 {
-	/* clear Bomb Game variables */
-	strlcpy (bombroom, "", MAXCHANLEN);
-	strlcpy (bombplayernick, "", MAXNICK);
-	strlcpy (currentbombgamestatus, "stopped", 10);
-	/* clear Russian Roulette Game variables */
-	strlcpy (russroom, "", MAXCHANLEN);
-	strlcpy (russplayernick, "", MAXNICK);
-	strlcpy (currentrussgamestatus, "stopped", 10);
-	russcountdowntime = 60;
+	int i;
+
+	/* clear Game variables */
+	for (i = 0; i < GS_GAME_TOTAL; i++) {
+		gameroom[i][0] = "";
+		gameplayernick[i][0] = "";
+		gamestatus[i] = GS_GAME_STOPPED;
+		countdowntime[i] = 60;
+	}
 	ModuleConfig (gs_settings);
 	return NS_SUCCESS;
 }
@@ -151,10 +152,10 @@ int ModInit (Module *mod_ptr)
 */
 void ModFini (void)
 {
-	if (!ircstrcasecmp (currentbombgamestatus, "playing")) {
+	if ( gamestatus[GS_GAME_BOMB] == GS_GAME_PLAYING ) {
 		DelTimer ("bombcountdown");
 	}
-	if (!ircstrcasecmp (currentrussgamestatus, "playing")) {
+	if ( gamestatus[GS_GAME_RUSS] == GS_GAME_PLAYING ) {
 		DelTimer ("russcountdown");
 	}
 }

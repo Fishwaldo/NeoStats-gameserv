@@ -26,44 +26,33 @@
  * Start Russian Roulette Game
 */
 int startruss(CmdParams* cmdparams) {
-	static char line[512];
-	int argc;
-	char **argv;
-	int tuic;
-	Client *u;
 	Channel *c;
 
-	strlcpy (line, cmdparams->param, 512);
-	argc = split_buf (line, &argv, 0);
-
-	if (!ircstrcasecmp (currentrussgamestatus, "stopped")) {
-		c = FindChannel(argv[1]);
+	if ( gamestatus[GS_GAME_RUSS] == GS_GAME_STOPPED ) {
+		c = FindChannel(cmdparams->av[0]);
 		if (!c) {
 			irc_prefmsg (gs_bot, cmdparams->source, "You must be in the Channel you wish to start the game in.");
 		} else {
-			u = FindUser(cmdparams->source->name);
-			tuic = IsChannelMember(c, u);
-			if (tuic == 1) {					
-				if ( kickgameschanoponly && !IsChanOp(c->name, u->name) ) {
+			if (IsChannelMember(c, cmdparams->source)) {
+				if ( kickgameschanoponly && !IsChanOp(c->name, cmdparams->source->name) ) {
 					irc_prefmsg (gs_bot, cmdparams->source, "You must be a Channel Operator to start the game.");
 				} else {
-					russcountdowntime = 60;
-					strlcpy (russroom, argv[1], MAXCHANLEN);
-					strlcpy (russplayernick, cmdparams->source->name, MAXNICK);
-					strlcpy (currentrussgamestatus, "playing", 10);
-					irc_join (gs_bot, russroom, NULL);
-					irc_cmode (gs_bot, russroom, "+o", gs_bot->name);
-					irc_chanprivmsg (gs_bot, russroom, "\0037Russian Roulette has been started by %s. Who will die this time?", cmdparams->source->name);
-					AddTimer (TIMER_TYPE_COUNTDOWN, timerupstopruss, "russcountdown", russcountdowntime);
+					countdowntime[GS_GAME_RUSS] = 60;
+					strlcpy (gameroom[GS_GAME_RUSS], cmdparams->av[0], MAXCHANLEN);
+					strlcpy (gameplayernick[GS_GAME_RUSS], cmdparams->source->name, MAXNICK);
+					gamestatus[GS_GAME_RUSS] == GS_GAME_PLAYING;
+					irc_join (gs_bot, gameroom[GS_GAME_RUSS], NULL);
+					irc_cmode (gs_bot, gameroom[GS_GAME_RUSS], "+o", gs_bot->name);
+					irc_chanprivmsg (gs_bot, gameroom[GS_GAME_RUSS], "\0037Russian Roulette has been started by %s. Who will die this time?", cmdparams->source->name);
+					AddTimer (TIMER_TYPE_COUNTDOWN, timerupstopruss, "russcountdown", countdowntime[GS_GAME_RUSS]);
 				}
 			} else {
 				irc_prefmsg (gs_bot, cmdparams->source, "You must be in the Channel you wish to start the game in.");
 			}
 		}
 	} else {
-		irc_prefmsg (gs_bot, cmdparams->source, "The Game is already active in %s , Try Again Later.", russroom);
+		irc_prefmsg (gs_bot, cmdparams->source, "The Game is already active in %s , Try Again Later.", gameroom[GS_GAME_RUSS]);
 	}
-	ns_free (argv);
 	return NS_SUCCESS;
 }
 
@@ -71,63 +60,54 @@ int startruss(CmdParams* cmdparams) {
  * Shoot Russian Roulette
 */
 int shootruss(CmdParams* cmdparams) {
-	static char line[512];
-	int argc;
-	char **argv;
-	int cmt;
 	Client *u;
 	Channel *c;
 	int ttto;
 	int rt;
 
-	strlcpy (line, cmdparams->param, 512);
-	argc = split_buf (line, &argv, 0);
-
-	if ( !ircstrcasecmp (cmdparams->source->name, russplayernick) && !ircstrcasecmp (currentrussgamestatus, "playing") ) {
-		u = FindUser (argv[1]);
+	if ( !ircstrcasecmp (cmdparams->source->name, gameplayernick[GS_GAME_RUSS]) && ( gamestatus[GS_GAME_RUSS] == GS_GAME_PLAYING ) ) {
+		u = FindUser (cmdparams->av[0]);
 		if (!u) {
-			stopruss(argv[1], "noton");
+			stopruss(cmdparams->av[0], "noton");
 		} else {
 			if ( IsExcluded(u) || IsMe(u) || is_bot(u) || u->user->is_away == 1 ) {
-				irc_chanprivmsg (gs_bot, russroom, "\0037%s Refuses to play this game %s, try someone else.", u->name, russplayernick);
+				irc_chanprivmsg (gs_bot, gameroom[GS_GAME_RUSS], "\0037%s Refuses to play this game %s, try someone else.", u->name, gameplayernick[GS_GAME_RUSS]);
 			} else {
-				c = FindChannel(russroom);
-				cmt = IsChannelMember(c, u);
-				if (cmt == 1) {
+				c = FindChannel(gameroom[GS_GAME_RUSS]);
+				if (IsChannelMember(c, u)) {
 					DelTimer ("russcountdown");
 					ttto = ( ( rand() % 5 ) + 1 );
-					if ( ttto < russcountdowntime ) {
-						russcountdowntime -= ttto;
+					if ( ttto < countdowntime[GS_GAME_RUSS] ) {
+						countdowntime[GS_GAME_RUSS] -= ttto;
 					}
 					switch (ttto) {
 						case 1:
-							irc_chanprivmsg (gs_bot, russroom, "\0037%s places the gun against %s's temple, and pulls the trigger.", russplayernick, u->name);
+							irc_chanprivmsg (gs_bot, gameroom[GS_GAME_RUSS], "\0037%s places the gun against %s's temple, and pulls the trigger.", gameplayernick[GS_GAME_RUSS], u->name);
 							break;
 						case 2:
-							irc_chanprivmsg (gs_bot, russroom, "\0037%s points the gun between %s's eyes.", russplayernick, u->name);
+							irc_chanprivmsg (gs_bot, gameroom[GS_GAME_RUSS], "\0037%s points the gun between %s's eyes.", gameplayernick[GS_GAME_RUSS], u->name);
 							break;
 						default:
-							irc_chanprivmsg (gs_bot, russroom, "\0037%s points the gun at %s and fires.", russplayernick, u->name);
+							irc_chanprivmsg (gs_bot, gameroom[GS_GAME_RUSS], "\0037%s points the gun at %s and fires.", gameplayernick[GS_GAME_RUSS], u->name);
 							break;
 					}
 					rt = ( rand() % 9 );
 					if ( rt == 7 ) {
-						irc_chanprivmsg (gs_bot, russroom, "\0034\2BANG!\2, Nice one %s.", russplayernick);
-						strlcpy (russplayernick, u->name, MAXNICK);
-						stopruss(argv[1],"Shot");
+						irc_chanprivmsg (gs_bot, gameroom[GS_GAME_RUSS], "\0034\2BANG!\2, Nice one %s.", gameplayernick[GS_GAME_RUSS]);
+						strlcpy (gameplayernick[GS_GAME_RUSS], u->name, MAXNICK);
+						stopruss(cmdparams->av[0],"Shot");
 					} else {
-						strlcpy (russplayernick, u->name, MAXNICK);
-						irc_chanprivmsg (gs_bot, russroom, "\0034click!, you now have the gun %s, select someone to shoot.", russplayernick);
+						strlcpy (gameplayernick[GS_GAME_RUSS], u->name, MAXNICK);
+						irc_chanprivmsg (gs_bot, gameroom[GS_GAME_RUSS], "\0034click!, you now have the gun %s, select someone to shoot.", gameplayernick[GS_GAME_RUSS]);
 						DelTimer ("russcountdown");
-						AddTimer (TIMER_TYPE_COUNTDOWN, timerupstopruss, "russcountdown", russcountdowntime);
+						AddTimer (TIMER_TYPE_COUNTDOWN, timerupstopruss, "russcountdown", countdowntime[GS_GAME_RUSS]);
 					}
 				} else {
-					stopruss(argv[1], "notin");
+					stopruss(cmdparams->av[0], "notin");
 				}
 			}
 		}
 	}
-	ns_free (argv);
 	return NS_SUCCESS;
 }
 
@@ -135,12 +115,7 @@ int shootruss(CmdParams* cmdparams) {
  * Stop Russian Roulette Game
 */
 void stopruss(char *nic, char *reason) {
-	Client *u;
-	Channel *c;
 	char *russdiereason;
-
-	c = FindChannel(russroom);
-	u = FindUser(russplayernick);
 
 	if (!ircstrcasecmp (reason, "noton")) {
 		russdiereason = "\0034Pick someone thats on the Network next time.";
@@ -158,12 +133,12 @@ void stopruss(char *nic, char *reason) {
 			}
 		}
 	}
-	irc_kick(gs_bot, russroom, russplayernick, russdiereason);
-	irc_chanprivmsg (gs_bot, russroom, "\0037GAME OVER");
-	irc_part (gs_bot, russroom, NULL);
-	strlcpy (russroom, "", MAXCHANLEN);
-	strlcpy (russplayernick, "", MAXNICK);
-	strlcpy (currentrussgamestatus, "stopped", 10);
+	irc_kick(gs_bot, gameroom[GS_GAME_RUSS], gameplayernick[GS_GAME_RUSS], russdiereason);
+	irc_chanprivmsg (gs_bot, gameroom[GS_GAME_RUSS], "\0037GAME OVER");
+	irc_part (gs_bot, gameroom[GS_GAME_RUSS], NULL);
+	gameroom[GS_GAME_RUSS][0] = "";
+	gameplayernick[GS_GAME_RUSS][0] = "";
+	gamestatus[GS_GAME_RUSS] = GS_GAME_STOPPED;
 }
 
 /*
@@ -171,4 +146,5 @@ void stopruss(char *nic, char *reason) {
 */
 int timerupstopruss(void) {
 	stopruss( "", "");
+	return NS_SUCCESS;
 }

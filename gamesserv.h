@@ -22,14 +22,6 @@
 Bot *gs_bot;
 
 /*
- * Bomb Game Variables
-*/
-char bombroom[MAXCHANLEN];
-char currentbombgamestatus[10];
-char bombplayernick[MAXNICK];
-int bombcountdowntime;
-
-/*
  * Bomb Game Help
 */
 extern const char gs_help_bomb_oneline[];
@@ -45,14 +37,6 @@ int passbomb (CmdParams* cmdparams);
 void stopbomb(char *nic, char *reason);
 int timerupstopbomb(void);
 
-
-/*
- * Russian Roulette Game Variables
-*/
-char russroom[MAXCHANLEN];
-char currentrussgamestatus[10];
-char russplayernick[MAXNICK];
-int russcountdowntime;
 
 /*
  * Russian Roulette Game Help
@@ -72,7 +56,27 @@ int timerupstopruss(void);
 
 
 /*
- * Bomb Game Variables
+ * Defines
+*/
+#define GS_GAME_TOTAL		0x00000002	/* Number Of Games */
+
+#define GS_GAME_BOMB		0x00000000	/* Bomb Game */
+#define GS_GAME_RUSS		0x00000001	/* Russian Roulette Game */
+
+#define GS_GAME_STOPPED		0x00000001	/* Game Not Running */
+#define GS_GAME_STARTING	0x00000002	/* Game Starting */
+#define GS_GAME_PLAYING		0x00000003	/* Game Running */
+
+/*
+ * Game Variables
+*/
+char gameroom[GS_GAME_TOTAL][MAXCHANLEN];
+int gamestatus[GS_GAME_TOTAL];
+char gameplayernick[GS_GAME_TOTAL][MAXNICK];
+int countdowntime[GS_GAME_TOTAL];
+
+/*
+ * Common Variables
 */
 int kickgameschanoponly;
 
