@@ -1,40 +1,38 @@
 
-BombServ Manual
+GamesServ Manual
 _________________________________________________________________
 
    1. Prerequisites and Installation.
 
         1.1. Compiling and Installation
 
-   Welcome  to  the  BombServ Manual. This document will aid you in
-   setting up and running WarServ on your IRC network.
+   Welcome  to  the  GamesServ Manual. This document will aid you in
+   setting up and running GamesServ on your IRC network.
 
-   BombServ is a Game Service.
-
-   The Object is to ensure you are not holding the bomb when it explodes.
+   GamesServ is a Game Service, for multiple small games.
 
 1. Prerequisites and Installation.
 
-   BombServ is designed to run on Top of NeoStats 3.0
+   GamesServ is designed to run on Top of NeoStats 3.0
    Please  refer  to  the  NeoStats website  for more
    information on the requirements for NeoStats.
 
-   BombServ requires the following:
-     * NeoStats 3.0 PreAlpha2 or Higher correctly installed and Running
+   GamesServ requires the following:
+     * NeoStats 3.0 or Higher correctly installed and Running
      * The time to read this entire document.
 
 
 1.1. Compiling and Installation
 
    As  long  as  you  have  successfully setup NeoStats, and installed it
-   correctly,  Compiling  BombServ is very simple and straight forward. First
+   correctly,  Compiling  GamesServ is very simple and straight forward. First
    you  must  extract  the  files  from  the download package. This is as
    simple as:
-bash$ tar -xzf BombServ-<ver>.tar.gz
+bash$ tar -xzf GamesServ-<ver>.tar.gz
 
-   This  should  then  create  a  directory  called  BombServ-<version> where
-   <version> is the Version of BombServ. Then Proceed to Change into the BombServ
-   directory, and run Configure as follows:
+   This  should  then  create  a  directory  called  GamesServ-<version>
+   where <version> is the Version of GamesServ. Then Proceed to Change
+   into the GamesServ directory, and run Configure as follows:
 bash$./configure [--with-neostats=<dir>]
 
    --with-neostats=<dir> should be used if your neostats directory is not
@@ -42,25 +40,26 @@ bash$./configure [--with-neostats=<dir>]
    to your NeoStats installation directory (NOT SOURCE DIRECTORY)
 
    If  the  configuration did not produce a error, you may then move onto
-   Compiling  BombServ.  Compiling  is simply just issuing the "make" command
+   Compiling  GamesServ.  Compiling  is simply just issuing the "make" command
    (or "gmake" if you are running BSD):
 
-   Again,  check  for  Error  messages.  As  long  as there are not error
-   messages,  "make install" will install BombServ, this README file, and any
-   auxiluary files needed into your NeoStats directory:
+   Again,  check  for  Error  messages.  As  long  as there are not error messages,
+   "make install" (or "gmake install" if you are running BSD) will install GamesServ,
+   this README file, and any auxiluary files needed into your NeoStats directory:
 
    Once  Installation  is  complete, you can either configure NeoStats to
-   load BombServ when it starts, or load BombServ via IRC.
+   load GamesServ when it starts, or load GamesServ via IRC.
 
-   To  Configure  NeoStats  to automatically load BombServ when it boots, add
-   the  following  line  to  your  "neostats.cfg"  file  in  the NeoStats
+   To  Configure  NeoStats  to automatically load GamesServ when it boots, add
+   the  following  line  to  your  "neostats.conf"  file  in  the NeoStats
    directory:
 
-   LOAD_MODULE BombServ
+   LOAD_MODULE GamesServ
 
-   To  load  BombServ  via  IRC,  you must make sure you have the appropriate
+   To  load  GamesServ  via  IRC,  you must make sure you have the appropriate
    permissions and issue the following command:
 
-   /msg neostats load BombServ
+   /msg neostats load GamesServ
 
-   Thats  it.  BombServ  is  now  loaded  and ready for use.
+   Thats  it.  GamesServ  is  now  loaded  and ready for use.
+   /msg GamesServ help
