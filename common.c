@@ -46,12 +46,12 @@ void CheckPartGameChannel(int gr) {
 
 	irc_chanprivmsg (gs_bot, gameroom[gr], "\0037GAME OVER");
 	for (i = 0 ; i < GS_GAME_TOTAL ; i++) {
-		if (!ircstrcasecmp (gameroom[i], gameroom[gr]) && i != gr) {
-			i = -1;
+		if (i != gr && gamestatus[i] != GS_GAME_STOPPED && !ircstrcasecmp (gameroom[i], gameroom[gr])) {
+			i = (GS_GAME_TOTAL + 1);
 			break;
 		}
 	}
-	if (i != -1) {
+	if (i <= GS_GAME_TOTAL) {
 		irc_part (gs_bot, gameroom[gr], NULL);
 	}
 	gameroom[gr][0] = '\0';
@@ -88,13 +88,13 @@ int CheckGameStart(Client *u, char *cn, int gn, int ct, int kg, int cj) {
 	}
 	if (cj == GS_GAME_CHANNEL_JOIN) {
 		for (i = 0 ; i < GS_GAME_TOTAL ; i++) {
-			if (!ircstrcasecmp (gameroom[i], gameroom[gn]) && i != gn) {
-				i = -1;
+			if (i != gn && gamestatus[i] != GS_GAME_STOPPED && !ircstrcasecmp (gameroom[i], gameroom[gn])) {
+				i = (GS_GAME_TOTAL + 1);
 				break;
 			}
 		}
-		if (i != -1) {
-			irc_join (gs_bot, gameroom[gn], "+o");
+		if (i <= GS_GAME_TOTAL) {
+			irc_join (gs_bot, cn, "+o");
 		}
 	}
 	countdowntime[gn] = ct;
