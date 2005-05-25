@@ -27,7 +27,7 @@
  * Start Russian Roulette Game
 */
 int startruss(CmdParams* cmdparams) {
-	if (CheckGameStart(cmdparams->source, cmdparams->av[0], GS_GAME_RUSS, 60, GS_GAME_KICK, GS_GAME_CHANNEL_JOIN) != NS_SUCCESS) {
+	if (CheckGameStart(cmdparams->source, cmdparams->av[0], GS_GAME_RUSS, TS_ONE_MINUTE, GS_GAME_KICK, GS_GAME_CHANNEL_JOIN) != NS_SUCCESS) {
 		return NS_SUCCESS;
 	}
 	irc_chanprivmsg (gs_bot, gameroom[GS_GAME_RUSS], "\0037Russian Roulette has been started by %s. Who will die this time?", cmdparams->source->name);

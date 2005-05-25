@@ -141,7 +141,7 @@ int ModInit( void )
 		gameroom[i][0] = '\0';
 		gameplayernick[i][0] = '\0';
 		gamestatus[i] = GS_GAME_STOPPED;
-		countdowntime[i] = 60;
+		countdowntime[i] = TS_ONE_MINUTE;
 	}
 	ModuleConfig (gs_settings);
 	return NS_SUCCESS;
