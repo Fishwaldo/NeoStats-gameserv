@@ -26,10 +26,9 @@
 /*
  * Help Text
 */
-const char gs_help_russ_oneline[] = "Start Russian Roulette in a Channel";
-const char gs_help_shoot_oneline[] = "Shoots the Nick Specified in the Channel";
 
 const char *gs_help_russ[] = {
+	"Start Russian Roulette in a Channel",
 	"Syntax: \2RUSSIAN <#Channel>\2",
 	"",
 	"This command starts Russian Roulette in the specified Channel.",
@@ -45,6 +44,7 @@ const char *gs_help_russ[] = {
 };
 
 const char *gs_help_shoot[] = {
+	"Shoots the Nick Specified in the Channel",
 	"Syntax: \2SHOOT <nickname>\2",
 	"",
 	"This option will attempt to shoot the specified Nick",

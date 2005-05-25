@@ -23,6 +23,17 @@
 #include "neostats.h"    /* Required for bot support */
 #include "gamesserv.h"
 
+typedef enum STOP_REASON
+{
+	STOP_NONE,
+	STOP_NOT_ONLINE,
+	STOP_NOT_INCHANNEL,
+} STOP_REASON;
+
+/* Prototypes */
+void stopbomb( char *nic, STOP_REASON reason );
+int timerupstopbomb(void);
+
 /*
  * Start Bomb Game
 */
@@ -46,7 +57,7 @@ int throwbomb(CmdParams* cmdparams) {
 	if ( !ircstrcasecmp (cmdparams->source->name, gameplayernick[GS_GAME_BOMB]) && ( gamestatus[GS_GAME_BOMB] == GS_GAME_PLAYING ) ) {
 		u = FindUser (cmdparams->av[0]);
 		if (!u) {
-			stopbomb(cmdparams->av[0], "noton");
+			stopbomb( cmdparams->av[0], STOP_NOT_ONLINE );
 		} else {
 			c = FindChannel(gameroom[GS_GAME_BOMB]);
 			if (IsChannelMember(c, u)) {
@@ -75,7 +86,7 @@ int throwbomb(CmdParams* cmdparams) {
 				}
 				SetTimerInterval("bombcountdown", countdowntime[GS_GAME_BOMB]);
 			} else {
-				stopbomb(cmdparams->av[0], "notin");
+				stopbomb( cmdparams->av[0], STOP_NOT_INCHANNEL );
 			}
 		}
 	}
@@ -85,15 +96,20 @@ int throwbomb(CmdParams* cmdparams) {
 /*
  * Stop Bomb Game
 */
-void stopbomb(char *nic, char *reason) {
-	if (!ircstrcasecmp (reason, "noton")) {
-		irc_chanprivmsg (gs_bot, gameroom[GS_GAME_BOMB], "\0037%s must be blind there is no %s on the network.", gameplayernick[GS_GAME_BOMB], nic);
-		DelTimer ("bombcountdown");
-	} else {
-		if (!ircstrcasecmp (reason, "notin")) {
+void stopbomb( char *nic, STOP_REASON reason )
+{
+	switch( reason )
+	{
+		case STOP_NOT_ONLINE:
+			irc_chanprivmsg (gs_bot, gameroom[GS_GAME_BOMB], "\0037%s must be blind there is no %s on the network.", gameplayernick[GS_GAME_BOMB], nic);
+			DelTimer ("bombcountdown");
+			break;
+		case STOP_NOT_INCHANNEL:
 			irc_chanprivmsg (gs_bot, gameroom[GS_GAME_BOMB], "\0037%s must be blind, %s isn''t in the channel.", gameplayernick[GS_GAME_BOMB], nic);
 			DelTimer ("bombcountdown");
-		}
+			break;
+		default:
+			break;
 	}
 	irc_kick(gs_bot, gameroom[GS_GAME_BOMB], gameplayernick[GS_GAME_BOMB], "\0034BOOOOOM !!!!!!");
 	CheckPartGameChannel(GS_GAME_BOMB);
@@ -102,7 +118,8 @@ void stopbomb(char *nic, char *reason) {
 /*
  * Bomb Timer Finished
 */
-int timerupstopbomb(void) {
-	stopbomb( "", "");
+int timerupstopbomb(void)
+{
+	stopbomb( NULL, STOP_NONE );
 	return NS_SUCCESS;
 }

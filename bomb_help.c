@@ -26,10 +26,8 @@
 /*
  * Help Text
 */
-const char gs_help_bomb_oneline[] = "Start a Bomb Game in a Channel";
-const char gs_help_throw_oneline[] = "Pass the Bomb to another Nick in the Channel";
-
 const char *gs_help_bomb[] = {
+	"Start a Bomb Game in a Channel",
 	"Syntax: \2BOMB <#Channel>\2",
 	"",
 	"This command starts the Bomb Game in the specified Channel.",
@@ -43,6 +41,7 @@ const char *gs_help_bomb[] = {
 };
 
 const char *gs_help_throw[] = {
+	"Pass the Bomb to another Nick in the Channel",
 	"Syntax: \2throw <nickname>\2",
 	"",
 	"This option will pass the bomb to the specified Nickname",

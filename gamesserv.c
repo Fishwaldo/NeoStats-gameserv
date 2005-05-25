@@ -85,13 +85,13 @@ ModuleEvent module_events[] = {
 */
 static bot_cmd gs_commands[]=
 {
-	{"BOMB",	startbomb,	1,	0,	gs_help_bomb,	gs_help_bomb_oneline},
-	{"THROW",	throwbomb,	1,	0,	gs_help_throw,	gs_help_throw_oneline},
-	{"RUSSIAN",	startruss,	1,	0,	gs_help_russ,	gs_help_russ_oneline},
-	{"SHOOT",	shootruss,	1,	0,	gs_help_shoot,	gs_help_shoot_oneline},
-	{"HILO",	starthilo,	1,	0,	gs_help_hilo,	gs_help_hilo_oneline},
-	{"GUESS",	guesshilo,	1,	0,	gs_help_guess,	gs_help_guess_oneline},
-	{NULL,		NULL,		0, 	0,	NULL,		NULL}
+	{"BOMB",	startbomb,	1,	0,	gs_help_bomb},
+	{"THROW",	throwbomb,	1,	0,	gs_help_throw},
+	{"RUSSIAN",	startruss,	1,	0,	gs_help_russ},
+	{"SHOOT",	shootruss,	1,	0,	gs_help_shoot},
+	{"HILO",	starthilo,	1,	0,	gs_help_hilo},
+	{"GUESS",	guesshilo,	1,	0,	gs_help_guess},
+	{NULL,		NULL,		0, 	0,	NULL}
 };
 
 static bot_setting gs_settings[]=

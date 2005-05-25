@@ -26,10 +26,8 @@
 /*
  * Help Text
 */
-const char gs_help_hilo_oneline[] = "Start a HiLo Game in a Channel";
-const char gs_help_guess_oneline[] = "Takes a Guess of the HiLo number";
-
 const char *gs_help_hilo[] = {
+	"Start a HiLo Game in a Channel",
 	"Syntax: \2HILO <#Channel>\2",
 	"",
 	"This command starts the HiLo Game in the specified Channel.",
@@ -39,6 +37,7 @@ const char *gs_help_hilo[] = {
 };
 
 const char *gs_help_guess[] = {
+	"Takes a Guess of the HiLo number",
 	"Syntax: \2GUESS <number>\2",
 	"",
 	"Take a guess at what the HiLo number is",

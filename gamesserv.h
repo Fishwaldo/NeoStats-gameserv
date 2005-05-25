@@ -25,8 +25,6 @@ Bot *gs_bot;
 /*
  * Bomb Game Help
 */
-extern const char gs_help_bomb_oneline[];
-extern const char gs_help_throw_oneline[];
 extern const char *gs_help_bomb[];
 extern const char *gs_help_throw[];
 
@@ -35,14 +33,10 @@ extern const char *gs_help_throw[];
 */
 int startbomb (CmdParams* cmdparams);
 int throwbomb (CmdParams* cmdparams);
-void stopbomb(char *nic, char *reason);
-int timerupstopbomb(void);
 
 /*
  * Russian Roulette Game Help
 */
-extern const char gs_help_russ_oneline[];
-extern const char gs_help_shoot_oneline[];
 extern const char *gs_help_russ[];
 extern const char *gs_help_shoot[];
 
@@ -57,8 +51,6 @@ int timerupstopruss(void);
 /*
  * HiLo Game Help
 */
-extern const char gs_help_hilo_oneline[];
-extern const char gs_help_guess_oneline[];
 extern const char *gs_help_hilo[];
 extern const char *gs_help_guess[];
 
