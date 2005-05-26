@@ -148,6 +148,12 @@
 			<File
 				RelativePath=".\russian_help.c">
 			</File>
+			<File
+				RelativePath=".\ttt.c">
+			</File>
+			<File
+				RelativePath=".\ttt_help.c">
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"

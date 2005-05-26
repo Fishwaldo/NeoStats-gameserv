@@ -30,7 +30,7 @@ int PlayerNickChange (CmdParams* cmdparams)
 {
 	int i;
 
-	for (i = 0; i < GS_GAME_TOTAL; i++) {
+	for (i = 0; i < GS_GAME_CHANNEL_TOTAL; i++) {
 		if (!ircstrcasecmp (gameplayernick[i], cmdparams->param)) {
 			strlcpy (gameplayernick[i], cmdparams->source->name, MAXNICK);
 		}
@@ -45,18 +45,18 @@ void CheckPartGameChannel(int gr) {
 	int i;
 
 	irc_chanprivmsg (gs_bot, gameroom[gr], "\0037GAME OVER");
-	for (i = 0 ; i < GS_GAME_TOTAL ; i++) {
-		if (i != gr && gamestatus[i] != GS_GAME_STOPPED && !ircstrcasecmp (gameroom[i], gameroom[gr])) {
-			i = (GS_GAME_TOTAL + 1);
+	for (i = 0 ; i < GS_GAME_CHANNEL_TOTAL ; i++) {
+		if (i != gr && gamestatus[i] != GS_GAME_CHANNEL_STOPPED && !ircstrcasecmp (gameroom[i], gameroom[gr])) {
+			i = (GS_GAME_CHANNEL_TOTAL + 1);
 			break;
 		}
 	}
-	if (i <= GS_GAME_TOTAL) {
+	if (i <= GS_GAME_CHANNEL_TOTAL) {
 		irc_part (gs_bot, gameroom[gr], NULL);
 	}
 	gameroom[gr][0] = '\0';
 	gameplayernick[gr][0] = '\0';
-	gamestatus[gr] = GS_GAME_STOPPED;
+	gamestatus[gr] = GS_GAME_CHANNEL_STOPPED;
 	return;
 }
 
@@ -69,7 +69,7 @@ int CheckGameStart(Client *u, char *cn, int gn, int ct, int kg, int cj) {
 	Channel *c;
 	int i;
 	
-	if (gamestatus[gn] != GS_GAME_STOPPED) {
+	if (gamestatus[gn] != GS_GAME_CHANNEL_STOPPED) {
 		irc_prefmsg (gs_bot, u, "The Game is already active in %s , Try Again Later.", gameroom[gn]);
 		return NS_FAILURE;
 	}
@@ -82,24 +82,66 @@ int CheckGameStart(Client *u, char *cn, int gn, int ct, int kg, int cj) {
 		irc_prefmsg (gs_bot, u, "You must be in the Channel you wish to start the game in.");
 		return NS_FAILURE;
 	}
-	if (kickgameschanoponly && kg == GS_GAME_KICK && !IsChanOp(c->name, u->name)) {
+	if (kickgameschanoponly && kg == GS_GAME_CHANNEL_KICK && !IsChanOp(c->name, u->name)) {
 		irc_prefmsg (gs_bot, u, "You must be a Channel Operator to start the game.");
 		return NS_FAILURE;
 	}
 	if (cj == GS_GAME_CHANNEL_JOIN) {
-		for (i = 0 ; i < GS_GAME_TOTAL ; i++) {
-			if (i != gn && gamestatus[i] != GS_GAME_STOPPED && !ircstrcasecmp (gameroom[i], gameroom[gn])) {
-				i = (GS_GAME_TOTAL + 1);
+		for (i = 0 ; i < GS_GAME_CHANNEL_TOTAL ; i++) {
+			if (i != gn && gamestatus[i] != GS_GAME_CHANNEL_STOPPED && !ircstrcasecmp (gameroom[i], gameroom[gn])) {
+				i = (GS_GAME_CHANNEL_TOTAL + 1);
 				break;
 			}
 		}
-		if (i <= GS_GAME_TOTAL) {
+		if (i <= GS_GAME_CHANNEL_TOTAL) {
 			irc_join (gs_bot, cn, "+o");
 		}
 	}
 	countdowntime[gn] = ct;
 	strlcpy (gameroom[gn], cn, MAXCHANLEN);
 	strlcpy (gameplayernick[gn], u->name, MAXNICK);
-	gamestatus[gn] = GS_GAME_PLAYING;
+	gamestatus[gn] = GS_GAME_CHANNEL_PLAYING;
 	return NS_SUCCESS;
+}
+
+/*
+ * Ensure User not already playing a User Game
+*/
+int CheckUserGameStart(Client *u) {
+	UserGameData *ugd;
+	
+	ugd = (UserGameData *)GetUserModValue(u);
+	if (!ugd) {
+		return NS_SUCCESS;
+	}
+	if (ugd->gametype == GS_GAME_USER_TICTACTOE) {
+		irc_prefmsg (gs_bot, u, "Unable to start another game, You are already playing Tic Tac Toe.");
+	} else {
+		irc_prefmsg (gs_bot, u, "Unable to start game, Unknown Error.");
+		stopug(u);
+	}
+	return NS_FAILURE;
+}
+
+/*
+ * Stop Current User Game, free Game Data and Mod Data
+*/
+void stopug(Client *u) {
+	UserGameData	*ugd;
+	TicTacToe	*tttd;
+	
+	ugd = (UserGameData *)GetUserModValue(u);
+	if (!ugd) {
+		return;
+	}
+	switch (ugd->gametype) {
+		case GS_GAME_USER_TICTACTOE:
+			tttd = (TicTacToe *)ugd->gamedata;
+			ns_free(tttd)
+		default:
+			ns_free(ugd->gamedata);
+	}
+	ns_free(ugd);
+	ClearUserModValue(u);
+	return;
 }

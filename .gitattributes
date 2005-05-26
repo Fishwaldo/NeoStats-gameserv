@@ -23,3 +23,5 @@
 /modconfigwin32.h -text
 /russian.c -text
 /russian_help.c -text
+/ttt.c -text
+/ttt_help.c -text

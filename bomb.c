@@ -38,11 +38,11 @@ int timerupstopbomb(void);
  * Start Bomb Game
 */
 int startbomb(CmdParams* cmdparams) {
-	if (CheckGameStart(cmdparams->source, cmdparams->av[0], GS_GAME_BOMB, TS_ONE_MINUTE, GS_GAME_KICK, GS_GAME_CHANNEL_JOIN) != NS_SUCCESS) {
+	if (CheckGameStart(cmdparams->source, cmdparams->av[0], GS_GAME_CHANNEL_BOMB, TS_ONE_MINUTE, GS_GAME_CHANNEL_KICK, GS_GAME_CHANNEL_JOIN) != NS_SUCCESS) {
 		return NS_SUCCESS;
 	}
-	irc_chanprivmsg (gs_bot, gameroom[GS_GAME_BOMB], "\0037A Bomb has been brought into the channel by %s. Don''t be the last one with it.", cmdparams->source->name);
-	AddTimer (TIMER_TYPE_COUNTDOWN, timerupstopbomb, "bombcountdown", countdowntime[GS_GAME_BOMB]);
+	irc_chanprivmsg (gs_bot, gameroom[GS_GAME_CHANNEL_BOMB], "\0037A Bomb has been brought into the channel by %s. Don''t be the last one with it.", cmdparams->source->name);
+	AddTimer (TIMER_TYPE_COUNTDOWN, timerupstopbomb, "bombcountdown", countdowntime[GS_GAME_CHANNEL_BOMB]);
 	return NS_SUCCESS;
 }
 
@@ -54,37 +54,37 @@ int throwbomb(CmdParams* cmdparams) {
 	Channel *c;
 	int ttto;
 
-	if ( !ircstrcasecmp (cmdparams->source->name, gameplayernick[GS_GAME_BOMB]) && ( gamestatus[GS_GAME_BOMB] == GS_GAME_PLAYING ) ) {
+	if ( !ircstrcasecmp (cmdparams->source->name, gameplayernick[GS_GAME_CHANNEL_BOMB]) && ( gamestatus[GS_GAME_CHANNEL_BOMB] == GS_GAME_CHANNEL_PLAYING ) ) {
 		u = FindUser (cmdparams->av[0]);
 		if (!u) {
 			stopbomb( cmdparams->av[0], STOP_NOT_ONLINE );
 		} else {
-			c = FindChannel(gameroom[GS_GAME_BOMB]);
+			c = FindChannel(gameroom[GS_GAME_CHANNEL_BOMB]);
 			if (IsChannelMember(c, u)) {
 				ttto = ( ( rand() % 5 ) + 1 );
-				if ( ttto < countdowntime[GS_GAME_BOMB] ) {
-					countdowntime[GS_GAME_BOMB] -= ttto;
+				if ( ttto < countdowntime[GS_GAME_CHANNEL_BOMB] ) {
+					countdowntime[GS_GAME_CHANNEL_BOMB] -= ttto;
 				}
 				switch (ttto) {
 					case 1:
-						irc_chanprivmsg (gs_bot, gameroom[GS_GAME_BOMB], "\0037%s places the bomb in %s's pocket.", gameplayernick[GS_GAME_BOMB], u->name);
+						irc_chanprivmsg (gs_bot, gameroom[GS_GAME_CHANNEL_BOMB], "\0037%s places the bomb in %s's pocket.", gameplayernick[GS_GAME_CHANNEL_BOMB], u->name);
 						break;
 					case 2:
-						irc_chanprivmsg (gs_bot, gameroom[GS_GAME_BOMB], "\0037%s sneaks the bomb next to %s.", gameplayernick[GS_GAME_BOMB], u->name);
+						irc_chanprivmsg (gs_bot, gameroom[GS_GAME_CHANNEL_BOMB], "\0037%s sneaks the bomb next to %s.", gameplayernick[GS_GAME_CHANNEL_BOMB], u->name);
 						break;
 					case 3:
-						irc_chanprivmsg (gs_bot, gameroom[GS_GAME_BOMB], "\0037%s throws the bomb at %s, who now has a large bruise.", gameplayernick[GS_GAME_BOMB], u->name);
+						irc_chanprivmsg (gs_bot, gameroom[GS_GAME_CHANNEL_BOMB], "\0037%s throws the bomb at %s, who now has a large bruise.", gameplayernick[GS_GAME_CHANNEL_BOMB], u->name);
 						break;
 					default:
-						irc_chanprivmsg (gs_bot, gameroom[GS_GAME_BOMB], "\0037%s passes the Bomb to %s.", gameplayernick[GS_GAME_BOMB], u->name);
+						irc_chanprivmsg (gs_bot, gameroom[GS_GAME_CHANNEL_BOMB], "\0037%s passes the Bomb to %s.", gameplayernick[GS_GAME_CHANNEL_BOMB], u->name);
 						break;
 				}
 				if ( IsExcluded(u) || IsMe(u) || IsBot(u) || IsAway(u) ) {
-					irc_chanprivmsg (gs_bot, gameroom[GS_GAME_BOMB], "\0037the Bomb Bounces off an invisible Force Field, and returns to %s.", gameplayernick[GS_GAME_BOMB]);
+					irc_chanprivmsg (gs_bot, gameroom[GS_GAME_CHANNEL_BOMB], "\0037the Bomb Bounces off an invisible Force Field, and returns to %s.", gameplayernick[GS_GAME_CHANNEL_BOMB]);
 				} else {
-					strlcpy (gameplayernick[GS_GAME_BOMB], u->name, MAXNICK);
+					strlcpy (gameplayernick[GS_GAME_CHANNEL_BOMB], u->name, MAXNICK);
 				}
-				SetTimerInterval("bombcountdown", countdowntime[GS_GAME_BOMB]);
+				SetTimerInterval("bombcountdown", countdowntime[GS_GAME_CHANNEL_BOMB]);
 			} else {
 				stopbomb( cmdparams->av[0], STOP_NOT_INCHANNEL );
 			}
@@ -101,18 +101,18 @@ void stopbomb( char *nic, STOP_REASON reason )
 	switch( reason )
 	{
 		case STOP_NOT_ONLINE:
-			irc_chanprivmsg (gs_bot, gameroom[GS_GAME_BOMB], "\0037%s must be blind there is no %s on the network.", gameplayernick[GS_GAME_BOMB], nic);
+			irc_chanprivmsg (gs_bot, gameroom[GS_GAME_CHANNEL_BOMB], "\0037%s must be blind there is no %s on the network.", gameplayernick[GS_GAME_CHANNEL_BOMB], nic);
 			DelTimer ("bombcountdown");
 			break;
 		case STOP_NOT_INCHANNEL:
-			irc_chanprivmsg (gs_bot, gameroom[GS_GAME_BOMB], "\0037%s must be blind, %s isn''t in the channel.", gameplayernick[GS_GAME_BOMB], nic);
+			irc_chanprivmsg (gs_bot, gameroom[GS_GAME_CHANNEL_BOMB], "\0037%s must be blind, %s isn''t in the channel.", gameplayernick[GS_GAME_CHANNEL_BOMB], nic);
 			DelTimer ("bombcountdown");
 			break;
 		default:
 			break;
 	}
-	irc_kick(gs_bot, gameroom[GS_GAME_BOMB], gameplayernick[GS_GAME_BOMB], "\0034BOOOOOM !!!!!!");
-	CheckPartGameChannel(GS_GAME_BOMB);
+	irc_kick(gs_bot, gameroom[GS_GAME_CHANNEL_BOMB], gameplayernick[GS_GAME_CHANNEL_BOMB], "\0034BOOOOOM !!!!!!");
+	CheckPartGameChannel(GS_GAME_CHANNEL_BOMB);
 }
 
 /*

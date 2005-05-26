@@ -31,10 +31,10 @@ int kickgameschanoponly;
 /*
  * Game Variables
 */
-char gameroom[GS_GAME_TOTAL][MAXCHANLEN];
-int gamestatus[GS_GAME_TOTAL];
-char gameplayernick[GS_GAME_TOTAL][MAXNICK];
-int countdowntime[GS_GAME_TOTAL];
+char gameroom[GS_GAME_CHANNEL_TOTAL][MAXCHANLEN];
+int gamestatus[GS_GAME_CHANNEL_TOTAL];
+char gameplayernick[GS_GAME_CHANNEL_TOTAL][MAXNICK];
+int countdowntime[GS_GAME_CHANNEL_TOTAL];
 
 /*
  * Copyright info and About
@@ -85,6 +85,8 @@ ModuleEvent module_events[] = {
 */
 static bot_cmd gs_commands[]=
 {
+	{"TTT",		startttt,	0,	0,	gs_help_ttt},
+	{"X",		playttt,	2,	0,	gs_help_x},
 	{"BOMB",	startbomb,	1,	0,	gs_help_bomb},
 	{"THROW",	throwbomb,	1,	0,	gs_help_throw},
 	{"RUSSIAN",	startruss,	1,	0,	gs_help_russ},
@@ -137,10 +139,10 @@ int ModInit( void )
 	int i;
 
 	/* clear Game variables */
-	for (i = 0; i < GS_GAME_TOTAL; i++) {
+	for (i = 0; i < GS_GAME_CHANNEL_TOTAL; i++) {
 		gameroom[i][0] = '\0';
 		gameplayernick[i][0] = '\0';
-		gamestatus[i] = GS_GAME_STOPPED;
+		gamestatus[i] = GS_GAME_CHANNEL_STOPPED;
 		countdowntime[i] = TS_ONE_MINUTE;
 	}
 	ModuleConfig (gs_settings);
@@ -152,13 +154,13 @@ int ModInit( void )
 */
 int ModFini( void )
 {
-	if ( gamestatus[GS_GAME_BOMB] == GS_GAME_PLAYING ) {
+	if ( gamestatus[GS_GAME_CHANNEL_BOMB] == GS_GAME_CHANNEL_PLAYING ) {
 		DelTimer ("bombcountdown");
 	}
-	if ( gamestatus[GS_GAME_RUSS] == GS_GAME_PLAYING ) {
+	if ( gamestatus[GS_GAME_CHANNEL_RUSS] == GS_GAME_CHANNEL_PLAYING ) {
 		DelTimer ("russcountdown");
 	}
-	if ( gamestatus[GS_GAME_HILO] == GS_GAME_PLAYING ) {
+	if ( gamestatus[GS_GAME_CHANNEL_HILO] == GS_GAME_CHANNEL_PLAYING ) {
 		DelTimer ("hilocountdown");
 	}
 	return NS_SUCCESS;

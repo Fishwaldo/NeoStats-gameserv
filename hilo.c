@@ -30,14 +30,14 @@ static int num;
  * Start HiLo Game
 */
 int starthilo(CmdParams* cmdparams) {
-	if (CheckGameStart(cmdparams->source, cmdparams->av[0], GS_GAME_HILO, 120, GS_GAME_NOKICK, GS_GAME_CHANNEL_JOIN) != NS_SUCCESS) {
+	if (CheckGameStart(cmdparams->source, cmdparams->av[0], GS_GAME_CHANNEL_HILO, 120, GS_GAME_CHANNEL_NOKICK, GS_GAME_CHANNEL_JOIN) != NS_SUCCESS) {
 		return NS_SUCCESS;
 	}
 	num_low = (rand() % 999000);
 	num = (num_low + (rand() % 999) + 1);
 	num_high = (num_low + 1000);
-	irc_chanprivmsg (gs_bot, gameroom[GS_GAME_HILO], "\0037A game of HiLo has been started by %s. Can you guess the number between %d and %d.", cmdparams->source->name, num_low, num_high);
-	AddTimer (TIMER_TYPE_COUNTDOWN, timerupstophilo, "hilocountdown", countdowntime[GS_GAME_HILO]);
+	irc_chanprivmsg (gs_bot, gameroom[GS_GAME_CHANNEL_HILO], "\0037A game of HiLo has been started by %s. Can you guess the number between %d and %d.", cmdparams->source->name, num_low, num_high);
+	AddTimer (TIMER_TYPE_COUNTDOWN, timerupstophilo, "hilocountdown", countdowntime[GS_GAME_CHANNEL_HILO]);
 	return NS_SUCCESS;
 }
 
@@ -47,7 +47,7 @@ int starthilo(CmdParams* cmdparams) {
 int guesshilo(CmdParams* cmdparams) {
 	int hlg;
 
-	if (gamestatus[GS_GAME_HILO] == GS_GAME_PLAYING) {
+	if (gamestatus[GS_GAME_CHANNEL_HILO] == GS_GAME_CHANNEL_PLAYING) {
 		hlg = atoi(cmdparams->av[0]);
 		if (hlg == num) {
 			stophilo(cmdparams->source->name, hlg);
@@ -59,7 +59,7 @@ int guesshilo(CmdParams* cmdparams) {
 			} else {
 				num_high = hlg;
 			}
-			irc_chanprivmsg (gs_bot, gameroom[GS_GAME_HILO], "\0037%s You are a bit closer with %d , number is between %d and %d.", cmdparams->source->name, hlg, num_low, num_high);
+			irc_chanprivmsg (gs_bot, gameroom[GS_GAME_CHANNEL_HILO], "\0037%s You are a bit closer with %d , number is between %d and %d.", cmdparams->source->name, hlg, num_low, num_high);
 			return NS_SUCCESS;
 		}
 	}
@@ -72,12 +72,12 @@ int guesshilo(CmdParams* cmdparams) {
 void stophilo(char *nic, int hlg) {
 
 	if (!hlg) {
-		irc_chanprivmsg (gs_bot, gameroom[GS_GAME_HILO], "\0037Times Up, it looks like your all Losers :)");
+		irc_chanprivmsg (gs_bot, gameroom[GS_GAME_CHANNEL_HILO], "\0037Times Up, it looks like your all Losers :)");
 	} else {
-		irc_chanprivmsg (gs_bot, gameroom[GS_GAME_HILO], "\0037%s is correct with %d and wins, the rest of you are just Losers :)", nic, hlg);
+		irc_chanprivmsg (gs_bot, gameroom[GS_GAME_CHANNEL_HILO], "\0037%s is correct with %d and wins, the rest of you are just Losers :)", nic, hlg);
 		DelTimer ("hilocountdown");
 	}
-	CheckPartGameChannel(GS_GAME_HILO);
+	CheckPartGameChannel(GS_GAME_CHANNEL_HILO);
 }
 
 /*

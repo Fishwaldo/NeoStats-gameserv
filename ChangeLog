@@ -2,6 +2,8 @@ GamesServ ChangeLog
 Fish (F), Mark (M), DeadNotBuried (D)
 =============================================================================
 3.0.a3-dev
+ - add Tic-Tac-Toe User Game (D)
+ - split games into User and Channel Games (D)
  - add HiLo Game (D)
  - Update Copyright (D)
  - Initial SVM Upload (D)
