@@ -87,9 +87,9 @@ int playttt(CmdParams* cmdparams) {
 		return NS_SUCCESS;
 	}
 	if (tttd->grid[(x-1)][(y-1)] != '?') {
-		if (tttd->grid[(x-1)][(y-1)] != 'O') {
+		if (tttd->grid[(x-1)][(y-1)] == 'O') {
 			irc_prefmsg (gs_bot, cmdparams->source, "I have already marked that position.");
-		} else if (tttd->grid[(x-1)][(y-1)] != 'X') {
+		} else if (tttd->grid[(x-1)][(y-1)] == 'X') {
 			irc_prefmsg (gs_bot, cmdparams->source, "You have already marked that position.");
 		}
 		return NS_SUCCESS;
@@ -136,9 +136,7 @@ void gsturn(Client *u, UserGameData *ugd, TicTacToe *tttd) {
 	tttd->grid[x][y] = 'O';
 	irc_prefmsg (gs_bot, u, "Game Board:");
 	for ( i = 0 ; i < 3 ; i++ ) {
-/*
-		irc_prefmsg (gs_bot, u, " %s | %s | %s", tttd->grid[0][i], tttd->grid[1][i], tttd->grid[2][i]);
-*/
+		irc_prefmsg (gs_bot, u, " %s | %s | %s", ( tttd->grid[0][i] == 'X' ) ? "X" : ( tttd->grid[0][i] == 'O' ) ? "O" : "-", ( tttd->grid[1][i] == 'X' ) ? "X" : ( tttd->grid[1][i] == 'O' ) ? "O" : "-", ( tttd->grid[2][i] == 'X' ) ? "X" : ( tttd->grid[2][i] == 'O' ) ? "O" : "-");
 		if (i < 2) {
 			irc_prefmsg (gs_bot, u, " ---|---|---");
 		}
@@ -150,6 +148,8 @@ void gsturn(Client *u, UserGameData *ugd, TicTacToe *tttd) {
 
 /*
  * Check for Tic Tac Toe Winner
+ *
+ * returns NS_SUCCESS for game over, else NS_FAILURE
 */
 int CheckTTTWinner(Client *u, UserGameData *ugd, TicTacToe *tttd) {
 	int i, w;
@@ -199,11 +199,11 @@ int CheckTTTWinner(Client *u, UserGameData *ugd, TicTacToe *tttd) {
 		case 1:
 			irc_prefmsg (gs_bot, u, "Looks like I win yet again :)");
 			stopug(u);
-			return NS_FAILURE;
+			return NS_SUCCESS;
 		case 2:
 			irc_prefmsg (gs_bot, u, "You only won because I am having a bad day.");
 			stopug(u);
-			return NS_FAILURE;
+			return NS_SUCCESS;
 		default:
 			break;
 	}
