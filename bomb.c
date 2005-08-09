@@ -32,7 +32,7 @@ typedef enum STOP_REASON
 
 /* Prototypes */
 void stopbomb( char *nic, STOP_REASON reason );
-int timerupstopbomb(void);
+int timerupstopbomb(void *);
 
 /*
  * Start Bomb Game
@@ -42,7 +42,7 @@ int startbomb(CmdParams* cmdparams) {
 		return NS_SUCCESS;
 	}
 	irc_chanprivmsg (gs_bot, gameroom[GS_GAME_CHANNEL_BOMB], "\0037A Bomb has been brought into the channel by %s. Don''t be the last one with it.", cmdparams->source->name);
-	AddTimer (TIMER_TYPE_COUNTDOWN, timerupstopbomb, "bombcountdown", countdowntime[GS_GAME_CHANNEL_BOMB]);
+	AddTimer (TIMER_TYPE_COUNTDOWN, timerupstopbomb, "bombcountdown", countdowntime[GS_GAME_CHANNEL_BOMB], NULL);
 	return NS_SUCCESS;
 }
 
@@ -118,7 +118,7 @@ void stopbomb( char *nic, STOP_REASON reason )
 /*
  * Bomb Timer Finished
 */
-int timerupstopbomb(void)
+int timerupstopbomb(void *userptr)
 {
 	stopbomb( NULL, STOP_NONE );
 	return NS_SUCCESS;

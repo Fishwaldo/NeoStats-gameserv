@@ -61,7 +61,7 @@ extern const char *gs_help_shoot[];
 int startruss (CmdParams* cmdparams);
 int shootruss (CmdParams* cmdparams);
 void stopruss(char *nic, char *reason);
-int timerupstopruss(void);
+int timerupstopruss(void *);
 
 /*
  * HiLo Game Help
@@ -75,7 +75,7 @@ extern const char *gs_help_guess[];
 int starthilo(CmdParams* cmdparams);
 int guesshilo(CmdParams* cmdparams);
 void stophilo(char *nic, int hlg);
-int timerupstophilo(void);
+int timerupstophilo(void *);
 
 /*
  * Tic-Tac-Toe Game Help

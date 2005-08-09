@@ -37,7 +37,7 @@ int starthilo(CmdParams* cmdparams) {
 	num = (num_low + (rand() % 999) + 1);
 	num_high = (num_low + 1000);
 	irc_chanprivmsg (gs_bot, gameroom[GS_GAME_CHANNEL_HILO], "\0037A game of HiLo has been started by %s. Can you guess the number between %d and %d.", cmdparams->source->name, num_low, num_high);
-	AddTimer (TIMER_TYPE_COUNTDOWN, timerupstophilo, "hilocountdown", countdowntime[GS_GAME_CHANNEL_HILO]);
+	AddTimer (TIMER_TYPE_COUNTDOWN, timerupstophilo, "hilocountdown", countdowntime[GS_GAME_CHANNEL_HILO], NULL);
 	return NS_SUCCESS;
 }
 
@@ -83,7 +83,7 @@ void stophilo(char *nic, int hlg) {
 /*
  * HiLO Timer Finished
 */
-int timerupstophilo(void) {
+int timerupstophilo(void *userptr) {
 	stophilo( "", 0);
 	return NS_SUCCESS;
 }

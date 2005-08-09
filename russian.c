@@ -31,7 +31,7 @@ int startruss(CmdParams* cmdparams) {
 		return NS_SUCCESS;
 	}
 	irc_chanprivmsg (gs_bot, gameroom[GS_GAME_CHANNEL_RUSS], "\0037Russian Roulette has been started by %s. Who will die this time?", cmdparams->source->name);
-	AddTimer (TIMER_TYPE_COUNTDOWN, timerupstopruss, "russcountdown", countdowntime[GS_GAME_CHANNEL_RUSS]);
+	AddTimer (TIMER_TYPE_COUNTDOWN, timerupstopruss, "russcountdown", countdowntime[GS_GAME_CHANNEL_RUSS], NULL);
 	return NS_SUCCESS;
 }
 
@@ -117,7 +117,7 @@ void stopruss(char *nic, char *reason) {
 /*
  * Russian Roulette Timer Finished
 */
-int timerupstopruss(void) {
+int timerupstopruss(void *userptr) {
 	stopruss( "", "");
 	return NS_SUCCESS;
 }
