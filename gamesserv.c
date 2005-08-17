@@ -93,13 +93,13 @@ static bot_cmd gs_commands[]=
 	{"SHOOT",	shootruss,	1,	0,	gs_help_shoot},
 	{"HILO",	starthilo,	1,	0,	gs_help_hilo},
 	{"GUESS",	guesshilo,	1,	0,	gs_help_guess},
-	{NULL,		NULL,		0, 	0,	NULL}
+	NS_CMD_END()
 };
 
 static bot_setting gs_settings[]=
 {
 	{"KICKGAMESCHANOPONLY",	&kickgameschanoponly,	SET_TYPE_BOOLEAN,	0,	0,	NS_ULEVEL_ADMIN,	NULL,	gs_help_set_kickchanoponly,	NULL,	(void *)0 },
-	{NULL,			NULL,			0,			0,	0,	0,			NULL,	NULL, 				NULL },
+	NS_SETTING_END()
 };
 
 /*
