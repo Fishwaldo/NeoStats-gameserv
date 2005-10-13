@@ -46,8 +46,8 @@ extern const char *gs_help_throw[];
 /*
  * Bomb Game Procedures
 */
-int startbomb (CmdParams* cmdparams);
-int throwbomb (CmdParams* cmdparams);
+int startbomb (const CmdParams *cmdparams);
+int throwbomb (const CmdParams *cmdparams);
 
 /*
  * Russian Roulette Game Help
@@ -58,8 +58,8 @@ extern const char *gs_help_shoot[];
 /*
  * Russian Roulette Game Procedures
 */
-int startruss (CmdParams* cmdparams);
-int shootruss (CmdParams* cmdparams);
+int startruss (const CmdParams *cmdparams);
+int shootruss (const CmdParams *cmdparams);
 void stopruss(char *nic, char *reason);
 int timerupstopruss(void *);
 
@@ -72,8 +72,8 @@ extern const char *gs_help_guess[];
 /*
  * HiLo Game Procedures
 */
-int starthilo(CmdParams* cmdparams);
-int guesshilo(CmdParams* cmdparams);
+int starthilo(const CmdParams *cmdparams);
+int guesshilo(const CmdParams *cmdparams);
 void stophilo(char *nic, int hlg);
 int timerupstophilo(void *);
 
@@ -88,8 +88,8 @@ extern const char *gs_help_x[];
 /*
  * Tic-Tac-Toe Game Procedures
 */
-int startttt(CmdParams* cmdparams);
-int playttt(CmdParams* cmdparams);
+int startttt(const CmdParams *cmdparams);
+int playttt(const CmdParams *cmdparams);
 void gsturn(Client *u, UserGameData *ugd, TicTacToe *tttd);
 int CheckTTTWinner(Client *u, UserGameData *ugd, TicTacToe *tttd);
 
@@ -135,7 +135,7 @@ extern const char *gs_help_set_kickchanoponly[];
 /*
  * Common Procedures
 */
-int PlayerNickChange (CmdParams* cmdparams);
+int PlayerNickChange (const CmdParams *cmdparams);
 void CheckPartGameChannel(int gr);
 int CheckGameStart(Client *u, char *cn, int gn, int ct, int kg, int cj);
 int CheckUserGameStart(Client *u);

@@ -26,7 +26,7 @@
 /*
  * Start Russian Roulette Game
 */
-int startruss(CmdParams* cmdparams) {
+int startruss(const CmdParams *cmdparams) {
 	if (CheckGameStart(cmdparams->source, cmdparams->av[0], GS_GAME_CHANNEL_RUSS, TS_ONE_MINUTE, GS_GAME_CHANNEL_KICK, GS_GAME_CHANNEL_JOIN) != NS_SUCCESS) {
 		return NS_SUCCESS;
 	}
@@ -38,7 +38,7 @@ int startruss(CmdParams* cmdparams) {
 /*
  * Shoot Russian Roulette
 */
-int shootruss(CmdParams* cmdparams) {
+int shootruss(const CmdParams *cmdparams) {
 	Client *u;
 	Channel *c;
 	int ttto;

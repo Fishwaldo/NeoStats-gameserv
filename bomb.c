@@ -37,7 +37,7 @@ int timerupstopbomb(void *);
 /*
  * Start Bomb Game
 */
-int startbomb(CmdParams* cmdparams) {
+int startbomb(const CmdParams *cmdparams) {
 	if (CheckGameStart(cmdparams->source, cmdparams->av[0], GS_GAME_CHANNEL_BOMB, TS_ONE_MINUTE, GS_GAME_CHANNEL_KICK, GS_GAME_CHANNEL_JOIN) != NS_SUCCESS) {
 		return NS_SUCCESS;
 	}
@@ -49,7 +49,7 @@ int startbomb(CmdParams* cmdparams) {
 /*
  * Throw Bomb
 */
-int throwbomb(CmdParams* cmdparams) {
+int throwbomb(const CmdParams *cmdparams) {
 	Client *u;
 	Channel *c;
 	int ttto;

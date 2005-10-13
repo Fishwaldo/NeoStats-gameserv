@@ -29,7 +29,7 @@ static int num;
 /*
  * Start HiLo Game
 */
-int starthilo(CmdParams* cmdparams) {
+int starthilo(const CmdParams *cmdparams) {
 	if (CheckGameStart(cmdparams->source, cmdparams->av[0], GS_GAME_CHANNEL_HILO, 120, GS_GAME_CHANNEL_NOKICK, GS_GAME_CHANNEL_JOIN) != NS_SUCCESS) {
 		return NS_SUCCESS;
 	}
@@ -44,7 +44,7 @@ int starthilo(CmdParams* cmdparams) {
 /*
  * Guess Number
 */
-int guesshilo(CmdParams* cmdparams) {
+int guesshilo(const CmdParams *cmdparams) {
 	int hlg;
 
 	if (gamestatus[GS_GAME_CHANNEL_HILO] == GS_GAME_CHANNEL_PLAYING) {

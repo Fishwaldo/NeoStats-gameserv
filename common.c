@@ -26,7 +26,7 @@
 /*
  * Nick Change Check
 */
-int PlayerNickChange (CmdParams* cmdparams)
+int PlayerNickChange (const CmdParams *cmdparams)
 {
 	int i;
 
@@ -82,7 +82,7 @@ int CheckGameStart(Client *u, char *cn, int gn, int ct, int kg, int cj) {
 		irc_prefmsg (gs_bot, u, "You must be in the Channel you wish to start the game in.");
 		return NS_FAILURE;
 	}
-	if (kickgameschanoponly && kg == GS_GAME_CHANNEL_KICK && !IsChanOp(c->name, u->name)) {
+	if (kickgameschanoponly && kg == GS_GAME_CHANNEL_KICK && !IsChanOp(c, u)) {
 		irc_prefmsg (gs_bot, u, "You must be a Channel Operator to start the game.");
 		return NS_FAILURE;
 	}

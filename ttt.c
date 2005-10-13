@@ -26,7 +26,7 @@
 /*
  * Start Tic Tac Toe Game
 */
-int startttt(CmdParams* cmdparams) {
+int startttt(const CmdParams *cmdparams) {
 	UserGameData *ugd;
 	TicTacToe *tttd;
 	int x, y;
@@ -60,7 +60,7 @@ int startttt(CmdParams* cmdparams) {
 /*
  * mark position
 */
-int playttt(CmdParams* cmdparams) {
+int playttt(const CmdParams *cmdparams) {
 	UserGameData *ugd;
 	TicTacToe *tttd;
 	int x, y;
