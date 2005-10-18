@@ -36,6 +36,8 @@ int gamestatus[GS_GAME_CHANNEL_TOTAL];
 char gameplayernick[GS_GAME_CHANNEL_TOTAL][MAXNICK];
 int countdowntime[GS_GAME_CHANNEL_TOTAL];
 
+Bot *gs_bot;
+
 /*
  * Copyright info and About
 */
@@ -70,13 +72,14 @@ ModuleInfo module_info = {
 	__TIME__,
 	0,
 	0,
+	0,
 };
 
 /*
  * Module event list
 */
 ModuleEvent module_events[] = {
-	{EVENT_NICK, PlayerNickChange},
+	{EVENT_NICK, PlayerNickChange, 0},
 	NS_EVENT_END()
 };
 
@@ -85,14 +88,14 @@ ModuleEvent module_events[] = {
 */
 static bot_cmd gs_commands[]=
 {
-	{"TTT",		startttt,	0,	0,	gs_help_ttt},
-	{"X",		playttt,	2,	0,	gs_help_x},
-	{"BOMB",	startbomb,	1,	0,	gs_help_bomb},
-	{"THROW",	throwbomb,	1,	0,	gs_help_throw},
-	{"RUSSIAN",	startruss,	1,	0,	gs_help_russ},
-	{"SHOOT",	shootruss,	1,	0,	gs_help_shoot},
-	{"HILO",	starthilo,	1,	0,	gs_help_hilo},
-	{"GUESS",	guesshilo,	1,	0,	gs_help_guess},
+	{"TTT",		startttt,	0,	0,	gs_help_ttt, 0, NULL, NULL},
+	{"X",		playttt,	2,	0,	gs_help_x, 0, NULL, NULL},
+	{"BOMB",	startbomb,	1,	0,	gs_help_bomb, 0, NULL, NULL},
+	{"THROW",	throwbomb,	1,	0,	gs_help_throw, 0, NULL, NULL},
+	{"RUSSIAN",	startruss,	1,	0,	gs_help_russ, 0, NULL, NULL},
+	{"SHOOT",	shootruss,	1,	0,	gs_help_shoot, 0, NULL, NULL},
+	{"HILO",	starthilo,	1,	0,	gs_help_hilo, 0, NULL, NULL},
+	{"GUESS",	guesshilo,	1,	0,	gs_help_guess, 0, NULL, NULL},
 	NS_CMD_END()
 };
 

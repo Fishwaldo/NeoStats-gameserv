@@ -20,7 +20,7 @@
 ** $Id$
 */
 
-Bot *gs_bot;
+extern Bot *gs_bot;
 
 /*
  * Game typedefs/structures
