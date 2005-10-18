@@ -26,10 +26,8 @@
 /*
  * Help Text
 */
-const char gs_help_ttt_oneline[] = "Start a Tic-Tac-Toe Game";
-const char gs_help_x_oneline[] = "Mark Tic-Tac-Toe position";
-
 const char *gs_help_ttt[] = {
+	"Start a Tic-Tac-Toe Game",
 	"Syntax: \2TTT\2",
 	"",
 	"This command starts a game of Tic-Tac-Toe.",
@@ -37,6 +35,7 @@ const char *gs_help_ttt[] = {
 };
 
 const char *gs_help_x[] = {
+	"Mark Tic-Tac-Toe position",
 	"Syntax: \2X <x position> <y position>\2",
 	"",
 	"Mark the Tic-Tac-Toe grid Number as yours",

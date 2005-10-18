@@ -80,8 +80,6 @@ int timerupstophilo(void *);
 /*
  * Tic-Tac-Toe Game Help
 */
-extern const char gs_help_ttt_oneline[];
-extern const char gs_help_x_oneline[];
 extern const char *gs_help_ttt[];
 extern const char *gs_help_x[];
 

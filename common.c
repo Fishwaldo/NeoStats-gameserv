@@ -128,19 +128,12 @@ int CheckUserGameStart(Client *u) {
 */
 void stopug(Client *u) {
 	UserGameData	*ugd;
-	TicTacToe	*tttd;
 	
 	ugd = (UserGameData *)GetUserModValue(u);
 	if (!ugd) {
 		return;
 	}
-	switch (ugd->gametype) {
-		case GS_GAME_USER_TICTACTOE:
-			tttd = (TicTacToe *)ugd->gamedata;
-			ns_free(tttd)
-		default:
-			ns_free(ugd->gamedata);
-	}
+	ns_free(ugd->gamedata);
 	ns_free(ugd);
 	ClearUserModValue(u);
 	return;

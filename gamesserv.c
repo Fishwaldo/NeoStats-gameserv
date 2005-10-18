@@ -132,7 +132,7 @@ int ModSynch (void)
 	}
 	srand((unsigned int)me.now);
 	return NS_SUCCESS;
-};
+}
 
 /*
  * Init module
