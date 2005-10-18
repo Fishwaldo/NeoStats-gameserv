@@ -46,7 +46,7 @@ int timerupstopbomb(void *userptr)
  * Start Bomb Game
 */
 int startbomb(const CmdParams *cmdparams) {
-	if (CheckGameStart(cmdparams->source, cmdparams->av[0], GS_GAME_CHANNEL_BOMB, TS_ONE_MINUTE, GS_GAME_CHANNEL_KICK, GS_GAME_CHANNEL_JOIN) != NS_SUCCESS) {
+	if (CheckGameStart(cmdparams->source, cmdparams->av[0], GS_GAME_CHANNEL_BOMB, TS_ONE_MINUTE, NS_TRUE, NS_TRUE) != NS_SUCCESS) {
 		return NS_SUCCESS;
 	}
 	irc_chanprivmsg (gs_bot, gameroom[GS_GAME_CHANNEL_BOMB], "\0037A Bomb has been brought into the channel by %s. Don''t be the last one with it.", cmdparams->source->name);

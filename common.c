@@ -82,11 +82,11 @@ int CheckGameStart(Client *u, char *cn, int gn, int ct, int kg, int cj) {
 		irc_prefmsg (gs_bot, u, "You must be in the Channel you wish to start the game in.");
 		return NS_FAILURE;
 	}
-	if (kickgameschanoponly && kg == GS_GAME_CHANNEL_KICK && !IsChanOp(c, u)) {
+	if (kickgameschanoponly && kg == NS_TRUE && !IsChanOp(c, u)) {
 		irc_prefmsg (gs_bot, u, "You must be a Channel Operator to start the game.");
 		return NS_FAILURE;
 	}
-	if (cj == GS_GAME_CHANNEL_JOIN) {
+	if (cj == NS_TRUE) {
 		for (i = 0 ; i < GS_GAME_CHANNEL_TOTAL ; i++) {
 			if (i != gn && gamestatus[i] != GS_GAME_CHANNEL_STOPPED && !ircstrcasecmp (gameroom[i], gameroom[gn])) {
 				i = (GS_GAME_CHANNEL_TOTAL + 1);

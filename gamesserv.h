@@ -99,11 +99,6 @@ int playttt(const CmdParams *cmdparams);
 #define GS_GAME_CHANNEL_PLAYING		0x00000003	/* Game Running */
 #define GS_GAME_CHANNEL_STOPPING	0x00000004	/* Game Stopping */
 
-#define GS_GAME_CHANNEL_NOJOIN		0x00000000	/* Don't Join Game Channel */
-#define GS_GAME_CHANNEL_JOIN		0x00000001	/* Join Game Channel */
-#define GS_GAME_CHANNEL_NOKICK		0x00000000	/* No Kicks From Channels */
-#define GS_GAME_CHANNEL_KICK		0x00000001	/* Loser Kicked From Game Channel */
-
 #define GS_GAME_USER_TICTACTOE		0x00000000	/* User Tic Tac Toe Game */
 
 /*

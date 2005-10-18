@@ -41,7 +41,7 @@ int timerupstophilo(void *userptr) {
  * Start HiLo Game
 */
 int starthilo(const CmdParams *cmdparams) {
-	if (CheckGameStart(cmdparams->source, cmdparams->av[0], GS_GAME_CHANNEL_HILO, 120, GS_GAME_CHANNEL_NOKICK, GS_GAME_CHANNEL_JOIN) != NS_SUCCESS) {
+	if (CheckGameStart(cmdparams->source, cmdparams->av[0], GS_GAME_CHANNEL_HILO, 120, NS_FALSE, NS_TRUE) != NS_SUCCESS) {
 		return NS_SUCCESS;
 	}
 	num_low = (rand() % 999000);
