@@ -23,9 +23,20 @@
 #include "neostats.h"    /* Required for bot support */
 #include "gamesserv.h"
 
+static void stophilo(char *nic, int hlg);
+
 static int num_low;
 static int num_high;
 static int num;
+
+/*
+ * HiLO Timer Finished
+*/
+int timerupstophilo(void *userptr) {
+	stophilo( "", 0);
+	return NS_SUCCESS;
+}
+
 /*
  * Start HiLo Game
 */
@@ -69,7 +80,7 @@ int guesshilo(const CmdParams *cmdparams) {
 /*
  * Stop HiLo Game
 */
-void stophilo(char *nic, int hlg) {
+static void stophilo(char *nic, int hlg) {
 
 	if (!hlg) {
 		irc_chanprivmsg (gs_bot, gameroom[GS_GAME_CHANNEL_HILO], "\0037Times Up, it looks like your all Losers :)");
@@ -80,10 +91,3 @@ void stophilo(char *nic, int hlg) {
 	CheckPartGameChannel(GS_GAME_CHANNEL_HILO);
 }
 
-/*
- * HiLO Timer Finished
-*/
-int timerupstophilo(void *userptr) {
-	stophilo( "", 0);
-	return NS_SUCCESS;
-}

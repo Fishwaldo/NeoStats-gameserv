@@ -31,8 +31,16 @@ typedef enum STOP_REASON
 } STOP_REASON;
 
 /* Prototypes */
-void stopbomb( char *nic, STOP_REASON reason );
-int timerupstopbomb(void *);
+static void stopbomb( char *nic, STOP_REASON reason );
+
+/*
+ * Bomb Timer Finished
+*/
+int timerupstopbomb(void *userptr)
+{
+	stopbomb( NULL, STOP_NONE );
+	return NS_SUCCESS;
+}
 
 /*
  * Start Bomb Game
@@ -96,7 +104,7 @@ int throwbomb(const CmdParams *cmdparams) {
 /*
  * Stop Bomb Game
 */
-void stopbomb( char *nic, STOP_REASON reason )
+static void stopbomb( char *nic, STOP_REASON reason )
 {
 	switch( reason )
 	{
@@ -115,11 +123,3 @@ void stopbomb( char *nic, STOP_REASON reason )
 	CheckPartGameChannel(GS_GAME_CHANNEL_BOMB);
 }
 
-/*
- * Bomb Timer Finished
-*/
-int timerupstopbomb(void *userptr)
-{
-	stopbomb( NULL, STOP_NONE );
-	return NS_SUCCESS;
-}

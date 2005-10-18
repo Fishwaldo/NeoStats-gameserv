@@ -23,6 +23,16 @@
 #include "neostats.h"    /* Required for bot support */
 #include "gamesserv.h"
 
+static void stopruss(char *nic, char *reason);
+
+/*
+ * Russian Roulette Timer Finished
+*/
+int timerupstopruss(void *userptr) {
+	stopruss( "", "");
+	return NS_SUCCESS;
+}
+
 /*
  * Start Russian Roulette Game
 */
@@ -91,7 +101,7 @@ int shootruss(const CmdParams *cmdparams) {
 /*
  * Stop Russian Roulette Game
 */
-void stopruss(char *nic, char *reason) {
+static void stopruss(char *nic, char *reason) {
 	char *russdiereason;
 
 	if (!ircstrcasecmp (reason, "noton")) {
@@ -112,12 +122,4 @@ void stopruss(char *nic, char *reason) {
 	}
 	irc_kick(gs_bot, gameroom[GS_GAME_CHANNEL_RUSS], gameplayernick[GS_GAME_CHANNEL_RUSS], russdiereason);
 	CheckPartGameChannel(GS_GAME_CHANNEL_RUSS);
-}
-
-/*
- * Russian Roulette Timer Finished
-*/
-int timerupstopruss(void *userptr) {
-	stopruss( "", "");
-	return NS_SUCCESS;
 }

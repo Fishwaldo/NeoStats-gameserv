@@ -41,12 +41,12 @@ Bot *gs_bot;
 /*
  * Copyright info and About
 */
-const char *gs_copyright[] = {
+static const char *gs_copyright[] = {
 	"Copyright (c) 2005 Justin Hammond, Mark Hetherington, DeadNotBuried",
 	NULL
 };
 
-const char *gs_about[] = {
+static const char *gs_about[] = {
 	"\2Small IRC Games Service\2",
 	"",
 	"This Service is intended as a fun only.",

@@ -23,6 +23,9 @@
 #include "neostats.h"    /* Required for bot support */
 #include "gamesserv.h"
 
+static int CheckTTTWinner(Client *u, UserGameData *ugd, TicTacToe *tttd);
+static void gsturn(Client *u, UserGameData *ugd, TicTacToe *tttd);
+
 /*
  * Start Tic Tac Toe Game
 */
@@ -105,7 +108,7 @@ int playttt(const CmdParams *cmdparams) {
 /*
  * GamesServ Turn
 */
-void gsturn(Client *u, UserGameData *ugd, TicTacToe *tttd) {
+static void gsturn(Client *u, UserGameData *ugd, TicTacToe *tttd) {
 	int i, i2, x, y;
 	
 	if (!ugd || ! tttd) {
@@ -151,7 +154,7 @@ void gsturn(Client *u, UserGameData *ugd, TicTacToe *tttd) {
  *
  * returns NS_SUCCESS for game over, else NS_FAILURE
 */
-int CheckTTTWinner(Client *u, UserGameData *ugd, TicTacToe *tttd) {
+static int CheckTTTWinner(Client *u, UserGameData *ugd, TicTacToe *tttd) {
 	int i, w;
 	
 	if (!ugd || !tttd) {
