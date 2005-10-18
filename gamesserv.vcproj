@@ -162,6 +162,9 @@
 			<File
 				RelativePath=".\gamesserv.h">
 			</File>
+			<File
+				RelativePath=".\modconfigwin32.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
@@ -172,13 +175,10 @@
 			RelativePath=".\ChangeLog">
 		</File>
 		<File
-			RelativePath=".\configure.in">
+			RelativePath=".\License">
 		</File>
 		<File
-			RelativePath=".\Makefile.in">
-		</File>
-		<File
-			RelativePath=".\modconfig.h.in">
+			RelativePath=".\README.GamesServ">
 		</File>
 		<File
 			RelativePath=".\Relnotes">
