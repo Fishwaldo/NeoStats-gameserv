@@ -82,7 +82,7 @@ int CheckGameStart(Client *u, char *cn, int gn, int ct, int kg, int cj) {
 		irc_prefmsg (gs_bot, u, "You must be in the Channel you wish to start the game in.");
 		return NS_FAILURE;
 	}
-	if (kickgameschanoponly && kg == NS_TRUE && !IsChanOp(c, u)) {
+	if (kickgameschanoponly && kg == NS_TRUE && !IsChanOp(c, u) && !IsChanHalfOp( c, u ) && !IsChanOwner( c, u ) && !IsChanProt( c, u ) && !IsChanAdmin( c, u )) {
 		irc_prefmsg (gs_bot, u, "You must be a Channel Operator to start the game.");
 		return NS_FAILURE;
 	}
