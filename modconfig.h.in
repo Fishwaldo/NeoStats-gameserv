@@ -1,7 +1,7 @@
 /* define this to enable debug code for this module */
 #undef DEBUG
 
-/* Version number of package */
+/* "Complete Module Version" */
 #undef MODULE_VERSION
 
 /* Major Version */

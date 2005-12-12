@@ -20,6 +20,8 @@
 ** $Id$
 */
 
+#include MODULECONFIG
+
 extern Bot *gs_bot;
 
 /*

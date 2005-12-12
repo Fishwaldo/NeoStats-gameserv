@@ -67,7 +67,7 @@ ModuleInfo module_info = {
 	gs_copyright,
 	gs_about,
 	NEOSTATS_VERSION,
-	"3.0",
+	MODULE_VERSION,
 	__DATE__,
 	__TIME__,
 	0,
