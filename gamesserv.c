@@ -1,5 +1,5 @@
 /* GamesServ - Small Games Service - NeoStats Addon Module
-** Copyright (c) 2005 Justin Hammond, Mark Hetherington, DeadNotBuried
+** Copyright (c) 2006 Justin Hammond, Mark Hetherington, DeadNotBuried
 **
 **  This program is free software; you can redistribute it and/or modify
 **  it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ Bot *gs_bot;
  * Copyright info and About
 */
 static const char *gs_copyright[] = {
-	"Copyright (c) 2005 Justin Hammond, Mark Hetherington, DeadNotBuried",
+	"Copyright (c) 2006 Justin Hammond, Mark Hetherington, DeadNotBuried",
 	NULL
 };
 
