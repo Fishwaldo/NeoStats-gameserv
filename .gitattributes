@@ -23,6 +23,7 @@
 /install-sh -text
 /modconfig.h.in -text
 /modconfigwin32.h -text
+/pulse.xml -text
 /russian.c -text
 /russian_help.c -text
 /ttt.c -text
