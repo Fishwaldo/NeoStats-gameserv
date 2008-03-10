@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual C++ Express 2005
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WarServ", "gamesserv.vcproj", "{D4947737-CFE5-4368-92AF-B79C0F55D09B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GamesServ", "gamesserv.vcproj", "{D4947737-CFE5-4368-92AF-B79C0F55D09B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
