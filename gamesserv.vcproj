@@ -190,19 +190,47 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\events.c"
+				RelativePath=".\bomb.c"
 				>
 			</File>
 			<File
-				RelativePath=".\play.c"
+				RelativePath=".\bomb_help.c"
 				>
 			</File>
 			<File
-				RelativePath=".\GamesServ.c"
+				RelativePath=".\common.c"
 				>
 			</File>
 			<File
-				RelativePath=".\GamesServ_help.c"
+				RelativePath=".\gamesserv.c"
+				>
+			</File>
+			<File
+				RelativePath=".\gamesserv_help.c"
+				>
+			</File>
+			<File
+				RelativePath=".\hilo.c"
+				>
+			</File>
+			<File
+				RelativePath=".\hilo_help.c"
+				>
+			</File>
+			<File
+				RelativePath=".\russian.c"
+				>
+			</File>
+			<File
+				RelativePath=".\russian_help.c"
+				>
+			</File>
+			<File
+				RelativePath=".\ttt.c"
+				>
+			</File>
+			<File
+				RelativePath=".\ttt_help.c"
 				>
 			</File>
 		</Filter>
@@ -212,11 +240,11 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\win32\modconfigwin32.h"
+				RelativePath=".\GamesServ.h"
 				>
 			</File>
 			<File
-				RelativePath=".\GamesServ.h"
+				RelativePath=".\win32\modconfigwin32.h"
 				>
 			</File>
 		</Filter>
