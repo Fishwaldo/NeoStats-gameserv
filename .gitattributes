@@ -8,6 +8,7 @@
 /NEWS -text
 /README.GamesServ -text
 /RELNOTES -text
+/RELNOTES.win32.txt -text
 /aclocal.m4 -text
 /bomb.c -text
 /bomb_help.c -text
@@ -16,6 +17,7 @@
 /configure.in -text
 /gamesserv.c -text
 /gamesserv.h -text
+/gamesserv.sln -text
 /gamesserv.vcproj -text
 /gamesserv_help.c -text
 /hilo.c -text
