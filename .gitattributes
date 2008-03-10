@@ -22,9 +22,12 @@
 /hilo_help.c -text
 /install-sh -text
 /modconfig.h.in -text
-/modconfigwin32.h -text
 /pulse.xml -text
 /russian.c -text
 /russian_help.c -text
 /ttt.c -text
 /ttt_help.c -text
+win32/GamesServ.qsp -text
+win32/buildwin32snap.bat -text
+win32/modconfigwin32.h -text
+win32/neostatsversion.rc -text
