@@ -3,12 +3,12 @@
 /COPYING -text
 /ChangeLog -text
 /LICENSE -text
+/Makefile.am -text
 /Makefile.in -text
 /NEWS -text
 /README.GamesServ -text
-/README.GamesServ.html -text
-/README.GamesServ.xml -text
 /RELNOTES -text
+/aclocal.m4 -text
 /bomb.c -text
 /bomb_help.c -text
 /common.c -text

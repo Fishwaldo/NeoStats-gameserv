@@ -20,7 +20,11 @@
 ** $Id$
 */
 
-#include MODULECONFIG
+#ifdef WIN32
+#include "modconfigwin32.h"
+#else
+#include "modconfig.h"
+#endif
 
 extern Bot *gs_bot;
 
