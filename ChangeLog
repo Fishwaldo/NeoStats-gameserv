@@ -1,6 +1,9 @@
 GamesServ ChangeLog
 Fish (F), Mark (M), DeadNotBuried (D)
 =============================================================================
+3.0.1 - Fish (F)
+ - Bump Version (F)
+
 3.0.0 - Fish (F)
  - Fix x86-64 compile errors (F)
  - Win32 Versions
