@@ -1,7 +1,12 @@
 GamesServ ChangeLog
 Fish (F), Mark (M), DeadNotBuried (D)
 =============================================================================
-3.0.a3-dev
+3.0.0 - Fish (F)
+ - Fix x86-64 compile errors (F)
+ - Win32 Versions
+ - Autotool GamesServ (F)
+
+3.0.a3
  - add Tic-Tac-Toe User Game (D)
  - split games into User and Channel Games (D)
  - add HiLo Game (D)
